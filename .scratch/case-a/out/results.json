@@ -1,0 +1,225 @@
+{
+  "schema": "reprocheck/run/v1",
+  "name": "distilbert-sst2",
+  "paper": "E:\\Projects\\new-project\\.scratch\\case-a\\out\\paper\\paper.html",
+  "repo": ".scratch\\case-a\\transformers",
+  "recipe": {
+    "name": "distilbert-sst2",
+    "eval_cmd": "{python} {harness}/eval_sst2.py --data data --model distilbert-base-uncased-finetuned-sst-2-english",
+    "install": [
+      "{pip} install torch --index-url https://download.pytorch.org/whl/cpu",
+      "{pip} install -e ."
+    ],
+    "data": [
+      "{python} {harness}/prepare_data.py --dest data"
+    ],
+    "python": "3.11",
+    "metric": "accuracy",
+    "metric_regex": "accuracy:\\s*(?P<value>\\d+\\.\\d+)",
+    "tolerance_abs": 0.5,
+    "tolerance_rel": 0.01,
+    "timeout_minutes": 45,
+    "budget_gb": 5.0,
+    "source": "curated",
+    "notes": "L2: released DistilBERT checkpoint, evaluated on the SST-2 dev split with the repository installed as a package. No training.",
+    "claim_ids": [],
+    "env": {},
+    "harness_dir": ".reprocheck-harness"
+  },
+  "run": {
+    "recipe": "distilbert-sst2",
+    "backend": "local",
+    "status": "failed",
+    "failure": "COMMAND_FAILED",
+    "failure_detail": "Obtaining file:///E:/Projects/new-project/.scratch/case-a/transformers\n\nERROR: file:///E:/Projects/new-project/.scratch/case-a/transformers does not appear to be a Python project: neither 'setup.py' nor 'pyproject.toml' found.\n",
+    "metrics": {},
+    "duration_s": 181.1,
+    "disk_gb": 0.65,
+    "artifacts": "E:\\Projects\\new-project\\.scratch\\case-a\\out\\artifacts",
+    "workdir": "E:\\Projects\\new-project\\.scratch\\case-a\\transformers",
+    "commands": [
+      {
+        "cmd": "\"E:\\Projects\\new-project\\.scratch\\case-a\\transformers\\.reprocheck-venv\\Scripts\\python.exe\" .reprocheck-harness/prepare_data.py --dest data",
+        "exit_code": 0,
+        "duration_s": 5.26,
+        "timed_out": false,
+        "log_path": "E:\\Projects\\new-project\\.scratch\\case-a\\out\\artifacts\\01-data.log"
+      },
+      {
+        "cmd": "\"E:\\Projects\\new-project\\.scratch\\case-a\\transformers\\.reprocheck-venv\\Scripts\\python.exe\" -m pip install torch --index-url https://download.pytorch.org/whl/cpu",
+        "exit_code": 0,
+        "duration_s": 164.05,
+        "timed_out": false,
+        "log_path": "E:\\Projects\\new-project\\.scratch\\case-a\\out\\artifacts\\01-install.log"
+      },
+      {
+        "cmd": "\"E:\\Projects\\new-project\\.scratch\\case-a\\transformers\\.reprocheck-venv\\Scripts\\python.exe\" -m pip install -e .",
+        "exit_code": 1,
+        "duration_s": 5.81,
+        "timed_out": false,
+        "log_path": "E:\\Projects\\new-project\\.scratch\\case-a\\out\\artifacts\\02-install.log"
+      }
+    ]
+  },
+  "claims": [],
+  "outcomes": [],
+  "outcome_summary": {},
+  "viability": {
+    "score": 2.4,
+    "recommendation": "AVOID",
+    "label": "do not use as a baseline yet",
+    "dimensions": [
+      {
+        "name": "executability",
+        "score": 2.0,
+        "note": "run status failed (COMMAND_FAILED)"
+      },
+      {
+        "name": "fidelity",
+        "score": 0.0,
+        "note": "no claim could be compared"
+      },
+      {
+        "name": "cost",
+        "score": 5.0,
+        "note": "3 min, 0.7 GB on disk"
+      },
+      {
+        "name": "comparability",
+        "score": 1.5,
+        "note": "protocol must be checked by hand: split, preprocessing and metric definition"
+      },
+      {
+        "name": "openness",
+        "score": 3.5,
+        "note": "no licence file"
+      }
+    ],
+    "blockers": [
+      "COMMAND_FAILED: Obtaining file:///E:/Projects/new-project/.scratch/case-a/transformers\n\nERROR: file:///E:/Projects/new-project/.scratch/case-a/transformers does not appear to be a Python project: neither 'setup.py' nor 'pyproject.toml' found.\n",
+      "no measured value to compare against the paper"
+    ]
+  },
+  "findings": [
+    {
+      "rule_id": "RC01",
+      "title": "No dependency manifest",
+      "severity": "major",
+      "detail": "No requirements.txt, environment.yml, pyproject.toml or Dockerfile. The environment cannot be rebuilt from the release, so version drift is guaranteed.",
+      "author_dependent": false,
+      "evidence": [
+        {
+          "kind": "code",
+          "ref": "repository root",
+          "text": "",
+          "detail": ""
+        }
+      ]
+    },
+    {
+      "rule_id": "RC07",
+      "title": "No executable entry point",
+      "severity": "major",
+      "detail": "No __main__ guard, CLI parser or conventional entry script (train.py, eval.py, ...). There is nothing obvious to run.",
+      "author_dependent": false,
+      "evidence": [
+        {
+          "kind": "code",
+          "ref": "repository-wide scan",
+          "text": "",
+          "detail": ""
+        }
+      ]
+    },
+    {
+      "rule_id": "RC16",
+      "title": "No README",
+      "severity": "major",
+      "detail": "There is no README, so the mapping from paper sections to commands is undocumented.",
+      "author_dependent": false,
+      "evidence": [
+        {
+          "kind": "code",
+          "ref": "repository root",
+          "text": "",
+          "detail": ""
+        }
+      ]
+    },
+    {
+      "rule_id": "RC06",
+      "title": "No random-seed control",
+      "severity": "minor",
+      "detail": "Nothing in the repository fixes random, numpy or framework seeds, so a re-run samples a different point in the training distribution and the reported number cannot be reproduced exactly.",
+      "author_dependent": false,
+      "evidence": [
+        {
+          "kind": "code",
+          "ref": "repository-wide scan",
+          "text": "",
+          "detail": ""
+        }
+      ]
+    },
+    {
+      "rule_id": "RC08",
+      "title": "README does not say how to install or run",
+      "severity": "minor",
+      "detail": "No pip/conda/make invocation was found in the README, so the intended environment and command are left to the reader to guess.",
+      "author_dependent": false,
+      "evidence": [
+        {
+          "kind": "code",
+          "ref": "README (missing)",
+          "text": "",
+          "detail": ""
+        }
+      ]
+    },
+    {
+      "rule_id": "RC09",
+      "title": "No configuration file; hyperparameters are hard-coded",
+      "severity": "minor",
+      "detail": "No YAML/JSON/TOML config or hparams module was found, so the paper's hyperparameters have to be reverse-engineered from source code edits.",
+      "author_dependent": false,
+      "evidence": [
+        {
+          "kind": "code",
+          "ref": "repository-wide scan",
+          "text": "",
+          "detail": ""
+        }
+      ]
+    },
+    {
+      "rule_id": "RC10",
+      "title": "No tests",
+      "severity": "info",
+      "detail": "Nothing verifies the implementation against known-good behaviour, so a silent bug in the pipeline looks exactly like a reproduction failure.",
+      "author_dependent": false,
+      "evidence": [
+        {
+          "kind": "code",
+          "ref": "repository-wide scan",
+          "text": "",
+          "detail": ""
+        }
+      ]
+    },
+    {
+      "rule_id": "RC15",
+      "title": "No licence file",
+      "severity": "info",
+      "detail": "Without an explicit licence the code is all-rights-reserved by default, which blocks reuse and redistribution even when it runs.",
+      "author_dependent": false,
+      "evidence": [
+        {
+          "kind": "code",
+          "ref": "repository root",
+          "text": "",
+          "detail": ""
+        }
+      ]
+    }
+  ]
+}

@@ -9,6 +9,9 @@ from pathlib import Path
 from .version import __version__
 from .api import assess
 from .config import Settings
+from .execute.case import run_case
+from .execute.recipe import RecipeError
+from .execute.report import render_run_console
 from .ingest.paper import IngestError
 from .risk.rules import RULES
 from .verdict.report import render_console
@@ -44,6 +47,17 @@ def build_parser() -> argparse.ArgumentParser:
 
     sub.add_parser("rules", help="list the deterministic risk rules")
     sub.add_parser("version", help="print the version")
+
+    rp = sub.add_parser("run", help="execute a recipe and compare measured numbers with the paper")
+    rp.add_argument("paper", help="paper file or URL (arXiv abs/ar5iv/PDF)")
+    rp.add_argument("--repo", required=True, help="local checkout or git URL of the release")
+    rp.add_argument("--recipe", required=True, help="recipe JSON/YAML describing how to run it")
+    rp.add_argument("--out", default="", help="output directory (default: runs/<recipe-name>)")
+    rp.add_argument("--backend", default="local", choices=["local", "conda", "docker"])
+    rp.add_argument("--limit-minutes", type=int, default=None, help="hard wall-clock cap")
+    rp.add_argument("--gpu", action="store_true", help="pass GPUs to the backend (docker only)")
+    rp.add_argument("--json", action="store_true", help="print the result JSON to stdout")
+    rp.add_argument("--quiet", action="store_true", help="suppress the terminal summary")
     return parser
 
 
@@ -95,6 +109,37 @@ def cmd_rules(_args: argparse.Namespace) -> int:
     return 0
 
 
+def cmd_run(args: argparse.Namespace) -> int:
+    out = args.out or f"runs/{Path(args.recipe).stem}"
+    try:
+        assessment = run_case(
+            paper=args.paper,
+            repo=args.repo,
+            recipe_path=args.recipe,
+            out_dir=out,
+            backend=args.backend,
+            limit_minutes=args.limit_minutes,
+            gpu=args.gpu,
+        )
+    except (RecipeError, IngestError, NotADirectoryError, FileNotFoundError, RuntimeError) as exc:
+        print(f"error: {exc}", file=sys.stderr)
+        return 1
+
+    paths = assessment.write(out)
+    if args.json:
+        import json
+
+        print(json.dumps(assessment.to_dict(), indent=2, ensure_ascii=False))
+    elif not args.quiet:
+        print(render_run_console(assessment))
+        print()
+        print(f"wrote {paths['report']}")
+        print(f"wrote {paths['results']}")
+        print(f"artifacts in {assessment.run.artifacts}")
+
+    return 0 if assessment.run.status == "ok" else 3
+
+
 def main(argv: list[str] | None = None) -> int:
     parser = build_parser()
     args = parser.parse_args(argv)
@@ -108,6 +153,8 @@ def main(argv: list[str] | None = None) -> int:
         return cmd_assess(args)
     if args.command == "rules":
         return cmd_rules(args)
+    if args.command == "run":
+        return cmd_run(args)
     parser.print_help()
     return 0
 

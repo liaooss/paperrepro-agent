@@ -1,0 +1,35 @@
+{
+  "recipe": "distilbert-sst2",
+  "backend": "local",
+  "status": "failed",
+  "failure": "COMMAND_FAILED",
+  "failure_detail": "Obtaining file:///E:/Projects/new-project/.scratch/case-a/transformers\n\nERROR: file:///E:/Projects/new-project/.scratch/case-a/transformers does not appear to be a Python project: neither 'setup.py' nor 'pyproject.toml' found.\n",
+  "metrics": {},
+  "duration_s": 181.1,
+  "disk_gb": 0.65,
+  "artifacts": "E:\\Projects\\new-project\\.scratch\\case-a\\out\\artifacts",
+  "workdir": "E:\\Projects\\new-project\\.scratch\\case-a\\transformers",
+  "commands": [
+    {
+      "cmd": "\"E:\\Projects\\new-project\\.scratch\\case-a\\transformers\\.reprocheck-venv\\Scripts\\python.exe\" .reprocheck-harness/prepare_data.py --dest data",
+      "exit_code": 0,
+      "duration_s": 5.26,
+      "timed_out": false,
+      "log_path": "E:\\Projects\\new-project\\.scratch\\case-a\\out\\artifacts\\01-data.log"
+    },
+    {
+      "cmd": "\"E:\\Projects\\new-project\\.scratch\\case-a\\transformers\\.reprocheck-venv\\Scripts\\python.exe\" -m pip install torch --index-url https://download.pytorch.org/whl/cpu",
+      "exit_code": 0,
+      "duration_s": 164.05,
+      "timed_out": false,
+      "log_path": "E:\\Projects\\new-project\\.scratch\\case-a\\out\\artifacts\\01-install.log"
+    },
+    {
+      "cmd": "\"E:\\Projects\\new-project\\.scratch\\case-a\\transformers\\.reprocheck-venv\\Scripts\\python.exe\" -m pip install -e .",
+      "exit_code": 1,
+      "duration_s": 5.81,
+      "timed_out": false,
+      "log_path": "E:\\Projects\\new-project\\.scratch\\case-a\\out\\artifacts\\02-install.log"
+    }
+  ]
+}

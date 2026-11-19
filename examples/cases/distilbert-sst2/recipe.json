@@ -1,0 +1,26 @@
+{
+  "name": "distilbert-sst2",
+  "source": "curated",
+  "python": "3.11",
+  "install": [
+    "{pip} install torch --index-url https://download.pytorch.org/whl/cpu",
+    "{pip} install -e ."
+  ],
+  "data": ["{python} {harness}/prepare_data.py --dest data"],
+  "eval_cmd": "{python} {harness}/eval_sst2.py --data data --model distilbert-base-uncased-finetuned-sst-2-english",
+  "metric": "accuracy",
+  "metric_regex": "accuracy:\\s*(?P<value>\\d+\\.\\d+)",
+  "tolerance_abs": 0.5,
+  "tolerance_rel": 0.01,
+  "timeout_minutes": 45,
+  "budget_gb": 5.0,
+  "harness_dir": ".",
+  "target": {
+    "metric": "accuracy",
+    "raw_metric": "SST-2 accuracy (GLUE dev)",
+    "dataset": "sst2",
+    "value": "91.3",
+    "source": "arXiv:1910.01108, Table 2 (GLUE results), row DistilBERT, column SST-2"
+  },
+  "notes": "L2: released DistilBERT checkpoint, evaluated on the SST-2 dev split with the repository installed as a package. No training."
+}

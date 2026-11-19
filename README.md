@@ -53,6 +53,34 @@ repo (any language) ──────────┘                │        
 4. **Apply rules** — 17 deterministic checks, no LLM, byte-for-byte reproducible between runs.
 5. **Grade** — a verdict plus a per-claim evidence level, every gap phrased as an action.
 
+## Run it, don't just read it
+
+The static assessment tells you whether a release is worth attempting. `reprocheck run` attempts it: it acquires the repository, builds an isolated environment, executes your recipe, parses the metric out of the log, and compares it with the paper.
+
+```bash
+reprocheck run https://ar5iv.labs.arxiv.org/html/1910.01108 \
+  --repo https://github.com/huggingface/transformers \
+  --recipe examples/cases/distilbert-sst2/recipe.json
+```
+
+```
+run       ok
+metrics   accuracy=0.9106
+claims    MATCH:1
+viability 4.3/5  use as a baseline
+```
+
+| | |
+|---|---|
+| Paper | **91.3** — Table 2, SST-2 |
+| Measured | **91.06** — 872 dev examples |
+| Delta | **-0.24 points** (tolerance 0.5) |
+| Evidence | `accuracy: 0.9106` in `artifacts/99-eval.log` |
+
+A run writes `run_report.md`, `results.json` and every raw log. Each number carries the command that produced it and the file that printed it. Failures are classified — `ENV_CONFLICT`, `MISSING_WEIGHTS`, `DATA_UNAVAILABLE`, `OOM`, `TIMEOUT` — because each one has a different remedy and "it crashed" is not a finding.
+
+The full case, including the three things that broke before the number appeared: [examples/cases/distilbert-sst2](examples/cases/distilbert-sst2/README.md).
+
 ## Verdicts
 
 | Verdict | Meaning | Typical cause |
@@ -110,8 +138,11 @@ Python 3.10+. The analysis core has **zero runtime dependencies** on purpose: it
 ## Usage
 
 ```bash
-# one paper, one repo
+# one paper, one repo: static assessment
 reprocheck assess paper.tex --repo ./their-code --smoke
+
+# actually run it and compare the numbers
+reprocheck run paper.tex --repo https://github.com/author/release --recipe recipe.json
 
 # CI gate: fail the job unless the release is at least R2
 reprocheck assess paper.pdf --repo ./code --smoke --fail-on R2

@@ -4,6 +4,36 @@ All notable changes to this project are documented here. The format follows
 [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and the project adheres
 to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.2.0] - 2026-11-19
+
+Execution: reprocheck no longer only judges whether a release *could* be
+reproduced, it runs it and reports what it measured.
+
+### Added
+
+- `reprocheck run PAPER --repo PATH|URL --recipe FILE` — acquire the release,
+  build an isolated environment, execute a recipe, parse the metric, compare it
+  with the paper, and score baseline viability.
+- Execution backends: `local` (venv), `conda` (pinned Python), `docker`
+  (per-recipe image, GPU passthrough optional).
+- Recipe format (JSON/YAML) with install/data/eval commands, metric regex,
+  tolerances, budget, timeout, harness scripts and a declared `target` claim.
+- Metric extraction with explicit-regex precedence, JSON-line and generic
+  fallbacks; fraction/percentage normalisation before comparison.
+- Comparison statuses `MATCH` / `CLOSE` / `MISMATCH` / `NOT_RUN` with tolerances
+  in percentage points.
+- Five-dimension viability score (executability, fidelity, cost, comparability,
+  openness) and a `use as a baseline` / `usable with conditions` / `do not use`
+  recommendation.
+- Failure taxonomy: `ENV_CONFLICT`, `MISSING_WEIGHTS`, `DATA_UNAVAILABLE`,
+  `OOM`, `NETWORK`, `TIMEOUT`, `NO_METRIC_PARSED`, `COMMAND_FAILED`,
+  `BACKEND_UNAVAILABLE` — each with the log line that proves it.
+- Repository acquisition with a tarball fallback when `git clone` fails, and
+  cache isolation (`HF_HOME`, `TORCH_HOME`, ...) inside the run directory.
+- First executed case: DistilBERT / SST-2 — 91.3 reported, 91.06 measured,
+  delta -0.24, `MATCH`, viability 4.3/5 (`examples/cases/distilbert-sst2`).
+- 34 new tests (125 total).
+
 ## [0.1.0] - 2026-11-19
 
 First public release.

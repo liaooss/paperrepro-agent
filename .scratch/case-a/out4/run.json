@@ -1,0 +1,44 @@
+{
+  "recipe": "distilbert-sst2",
+  "backend": "local",
+  "status": "ok",
+  "failure": "",
+  "failure_detail": "",
+  "metrics": {
+    "accuracy": 0.9106
+  },
+  "duration_s": 76.4,
+  "disk_gb": 1.13,
+  "artifacts": "E:\\Projects\\new-project\\.scratch\\case-a\\out4\\artifacts",
+  "workdir": "E:\\Projects\\new-project\\.scratch\\case-a\\out3\\repo",
+  "commands": [
+    {
+      "cmd": "\"E:\\Projects\\new-project\\.scratch\\case-a\\out3\\repo\\.reprocheck-venv\\Scripts\\python.exe\" .reprocheck-harness/prepare_data.py --dest data",
+      "exit_code": 0,
+      "duration_s": 0.18,
+      "timed_out": false,
+      "log_path": "E:\\Projects\\new-project\\.scratch\\case-a\\out4\\artifacts\\01-data.log"
+    },
+    {
+      "cmd": "\"E:\\Projects\\new-project\\.scratch\\case-a\\out3\\repo\\.reprocheck-venv\\Scripts\\python.exe\" -m pip install torch --index-url https://download.pytorch.org/whl/cpu",
+      "exit_code": 0,
+      "duration_s": 2.64,
+      "timed_out": false,
+      "log_path": "E:\\Projects\\new-project\\.scratch\\case-a\\out4\\artifacts\\01-install.log"
+    },
+    {
+      "cmd": "\"E:\\Projects\\new-project\\.scratch\\case-a\\out3\\repo\\.reprocheck-venv\\Scripts\\python.exe\" -m pip install -e .",
+      "exit_code": 0,
+      "duration_s": 12.53,
+      "timed_out": false,
+      "log_path": "E:\\Projects\\new-project\\.scratch\\case-a\\out4\\artifacts\\02-install.log"
+    },
+    {
+      "cmd": "\"E:\\Projects\\new-project\\.scratch\\case-a\\out3\\repo\\.reprocheck-venv\\Scripts\\python.exe\" .reprocheck-harness/eval_sst2.py --data data --model distilbert-base-uncased-finetuned-sst-2-english",
+      "exit_code": 0,
+      "duration_s": 61.02,
+      "timed_out": false,
+      "log_path": "E:\\Projects\\new-project\\.scratch\\case-a\\out4\\artifacts\\99-eval.log"
+    }
+  ]
+}
