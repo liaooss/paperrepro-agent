@@ -1,0 +1,409 @@
+{
+  "schema": "reprocheck/scorecard/v1",
+  "paper": "examples\\demo\\paper.md",
+  "repo": "E:\\Projects\\new-project\\examples\\demo\\code",
+  "generated_at": "2026-11-19T04:22:29+00:00",
+  "reprocheck_version": "0.1.0",
+  "verdict": "R2",
+  "verdict_label": "reproducible after engineering work",
+  "confidence": 0.415,
+  "summary": "Verdict R2 (reproducible after engineering work): 3 quantitative claim(s) from the paper were checked against the code. 4 major issue(s) remain, starting with RC02 dependencies are not version-pinned. 3 claim(s) still need execution before any number can be called reproduced.",
+  "llm": {
+    "used": false,
+    "model": ""
+  },
+  "smoke": {
+    "enabled": true,
+    "syntax_ok": true,
+    "entry_ok": true,
+    "manifest_ok": true,
+    "checked": 7,
+    "errors": []
+  },
+  "paper_meta": {
+    "path": "examples\\demo\\paper.md",
+    "format": "markdown",
+    "title": "TinyCLIP: Efficient Contrastive Pretraining at Small Scale",
+    "sections": [
+      "TinyCLIP: Efficient Contrastive Pretraining at Small Scale",
+      "Abstract",
+      "3 Method",
+      "4 Experiments",
+      "4.1 Main results",
+      "4.2 Detection transfer",
+      "5 Limitations"
+    ],
+    "tables": [
+      {
+        "id": "Table 1",
+        "caption": "",
+        "header": [
+          "Method",
+          "ImageNet Top-1",
+          "Zero-shot ImageNet",
+          "Params"
+        ],
+        "rows": [
+          [
+            "CLIP-B/32",
+            "68.3",
+            "43.3",
+            "88M"
+          ],
+          [
+            "TinyCLIP (ours)",
+            "72.3",
+            "45.1",
+            "12M"
+          ]
+        ],
+        "section": "4.1 Main results"
+      }
+    ],
+    "warnings": []
+  },
+  "repo_meta": {
+    "root": "E:\\Projects\\new-project\\examples\\demo\\code",
+    "file_count": 10,
+    "languages": {
+      "python": 7,
+      "docs": 1,
+      "text": 1,
+      "config": 1
+    },
+    "manifests": [
+      "requirements.txt"
+    ],
+    "entry_points": [
+      "evaluate.py:34",
+      "train.py:24"
+    ],
+    "config_files": [
+      "configs/tinyclip.yaml"
+    ],
+    "readme_path": "README.md",
+    "warnings": []
+  },
+  "claims": [
+    {
+      "id": "C01",
+      "metric": "accuracy",
+      "raw_metric": "ImageNet Top-1",
+      "value": "72.3",
+      "row_label": "TinyCLIP (ours)",
+      "dataset": "imagenet",
+      "split": "",
+      "role": "paper",
+      "level": "E2",
+      "gaps": [
+        "the reported value 72.3 appears nowhere in the code or result files"
+      ],
+      "notes": "",
+      "evidence": [
+        {
+          "kind": "paper",
+          "ref": "Table 1 / row 'TinyCLIP (ours)' / column 'ImageNet Top-1'",
+          "text": "TinyCLIP (ours): ImageNet Top-1 = 72.3",
+          "detail": ""
+        }
+      ],
+      "code_evidence": [
+        {
+          "kind": "code",
+          "ref": "utils/metrics.py:8",
+          "text": "def top1_accuracy(logits: torch.Tensor, targets: torch.Tensor) -> int:",
+          "detail": "ImageNet Top-1 implementation"
+        },
+        {
+          "kind": "code",
+          "ref": "evaluate.py:1",
+          "text": "\"\"\"Evaluate a trained TinyCLIP checkpoint on the ImageNet validation split.\"\"\"",
+          "detail": "dataset 'imagenet'"
+        },
+        {
+          "kind": "code",
+          "ref": "utils/data.py:1",
+          "text": "\"\"\"ImageNet dataloader.\"\"\"",
+          "detail": "dataset 'imagenet'"
+        }
+      ]
+    },
+    {
+      "id": "C02",
+      "metric": "map",
+      "raw_metric": "mAP",
+      "value": "0.41",
+      "row_label": "(in-text)",
+      "dataset": "coco",
+      "split": "",
+      "role": "paper",
+      "level": "X",
+      "gaps": [
+        "no implementation of metric 'map' was found in the repository",
+        "dataset 'coco' is never referenced in the repository",
+        "the reported value 0.41 appears nowhere in the code or result files"
+      ],
+      "notes": "Extracted from prose, not from a table; verify the surrounding protocol.",
+      "evidence": [
+        {
+          "kind": "paper",
+          "ref": "4.2 Detection transfer (prose)",
+          "text": "On the detection task we reach 0.41 mAP on COCO.",
+          "detail": ""
+        }
+      ],
+      "code_evidence": []
+    },
+    {
+      "id": "C03",
+      "metric": "zero_shot_accuracy",
+      "raw_metric": "Zero-shot ImageNet",
+      "value": "45.1",
+      "row_label": "TinyCLIP (ours)",
+      "dataset": "imagenet",
+      "split": "",
+      "role": "paper",
+      "level": "E3",
+      "gaps": [
+        "no implementation of metric 'zero_shot_accuracy' was found in the repository",
+        "the reported value 45.1 appears nowhere in the code or result files"
+      ],
+      "notes": "",
+      "evidence": [
+        {
+          "kind": "paper",
+          "ref": "Table 1 / row 'TinyCLIP (ours)' / column 'Zero-shot ImageNet'",
+          "text": "TinyCLIP (ours): Zero-shot ImageNet = 45.1",
+          "detail": ""
+        }
+      ],
+      "code_evidence": [
+        {
+          "kind": "code",
+          "ref": "evaluate.py:1",
+          "text": "\"\"\"Evaluate a trained TinyCLIP checkpoint on the ImageNet validation split.\"\"\"",
+          "detail": "dataset 'imagenet'"
+        },
+        {
+          "kind": "code",
+          "ref": "utils/data.py:1",
+          "text": "\"\"\"ImageNet dataloader.\"\"\"",
+          "detail": "dataset 'imagenet'"
+        }
+      ]
+    },
+    {
+      "id": "C04",
+      "metric": "accuracy",
+      "raw_metric": "ImageNet Top-1",
+      "value": "68.3",
+      "row_label": "CLIP-B/32",
+      "dataset": "imagenet",
+      "split": "",
+      "role": "reference",
+      "level": "E2",
+      "gaps": [
+        "the reported value 68.3 appears nowhere in the code or result files"
+      ],
+      "notes": "",
+      "evidence": [
+        {
+          "kind": "paper",
+          "ref": "Table 1 / row 'CLIP-B/32' / column 'ImageNet Top-1'",
+          "text": "CLIP-B/32: ImageNet Top-1 = 68.3",
+          "detail": ""
+        }
+      ],
+      "code_evidence": [
+        {
+          "kind": "code",
+          "ref": "utils/metrics.py:8",
+          "text": "def top1_accuracy(logits: torch.Tensor, targets: torch.Tensor) -> int:",
+          "detail": "ImageNet Top-1 implementation"
+        },
+        {
+          "kind": "code",
+          "ref": "evaluate.py:1",
+          "text": "\"\"\"Evaluate a trained TinyCLIP checkpoint on the ImageNet validation split.\"\"\"",
+          "detail": "dataset 'imagenet'"
+        },
+        {
+          "kind": "code",
+          "ref": "utils/data.py:1",
+          "text": "\"\"\"ImageNet dataloader.\"\"\"",
+          "detail": "dataset 'imagenet'"
+        }
+      ]
+    },
+    {
+      "id": "C05",
+      "metric": "zero_shot_accuracy",
+      "raw_metric": "Zero-shot ImageNet",
+      "value": "43.3",
+      "row_label": "CLIP-B/32",
+      "dataset": "imagenet",
+      "split": "",
+      "role": "reference",
+      "level": "E3",
+      "gaps": [
+        "no implementation of metric 'zero_shot_accuracy' was found in the repository",
+        "the reported value 43.3 appears nowhere in the code or result files"
+      ],
+      "notes": "",
+      "evidence": [
+        {
+          "kind": "paper",
+          "ref": "Table 1 / row 'CLIP-B/32' / column 'Zero-shot ImageNet'",
+          "text": "CLIP-B/32: Zero-shot ImageNet = 43.3",
+          "detail": ""
+        }
+      ],
+      "code_evidence": [
+        {
+          "kind": "code",
+          "ref": "evaluate.py:1",
+          "text": "\"\"\"Evaluate a trained TinyCLIP checkpoint on the ImageNet validation split.\"\"\"",
+          "detail": "dataset 'imagenet'"
+        },
+        {
+          "kind": "code",
+          "ref": "utils/data.py:1",
+          "text": "\"\"\"ImageNet dataloader.\"\"\"",
+          "detail": "dataset 'imagenet'"
+        }
+      ]
+    }
+  ],
+  "findings": [
+    {
+      "rule_id": "RC02",
+      "title": "Dependencies are not version-pinned",
+      "severity": "major",
+      "detail": "4 requirement(s) carry no version constraint, so a fresh install can resolve to versions the authors never tested. Example: torch",
+      "author_dependent": false,
+      "evidence": [
+        {
+          "kind": "code",
+          "ref": "requirements.txt",
+          "text": "torch",
+          "detail": "unpinned requirement"
+        },
+        {
+          "kind": "code",
+          "ref": "requirements.txt",
+          "text": "numpy",
+          "detail": "unpinned requirement"
+        },
+        {
+          "kind": "code",
+          "ref": "requirements.txt",
+          "text": "pyyaml",
+          "detail": "unpinned requirement"
+        },
+        {
+          "kind": "code",
+          "ref": "requirements.txt",
+          "text": "tqdm",
+          "detail": "unpinned requirement"
+        }
+      ]
+    },
+    {
+      "rule_id": "RC03",
+      "title": "Absolute filesystem paths in source",
+      "severity": "major",
+      "detail": "2 hard-coded path(s) such as '/data/imagenet' point at the authors' machine. Any other checkout has to be patched before it runs.",
+      "author_dependent": false,
+      "evidence": [
+        {
+          "kind": "code",
+          "ref": "evaluate.py:16",
+          "text": "DATA_ROOT = \"/data/imagenet\"",
+          "detail": "absolute path /data/imagenet"
+        }
+      ]
+    },
+    {
+      "rule_id": "RC13",
+      "title": "Imports not declared in any manifest",
+      "severity": "major",
+      "detail": "1 module(s) are imported but absent from every dependency file (sklearn). A clean environment will fail at import time.",
+      "author_dependent": false,
+      "evidence": [
+        {
+          "kind": "code",
+          "ref": "evaluate.py:9",
+          "text": "from sklearn.metrics import average_precision_score  # noqa: F401  (used by an older branch)",
+          "detail": "import sklearn"
+        }
+      ]
+    },
+    {
+      "rule_id": "RC17",
+      "title": "Paper claims with no code counterpart",
+      "severity": "major",
+      "detail": "1 claim(s) have no implementation, dataset or value in the repository (C02). These results cannot be reproduced from this release.",
+      "author_dependent": false,
+      "evidence": [
+        {
+          "kind": "paper",
+          "ref": "4.2 Detection transfer (prose)",
+          "text": "mAP",
+          "detail": ""
+        }
+      ]
+    },
+    {
+      "rule_id": "RC12",
+      "title": "GPU requirement undocumented",
+      "severity": "minor",
+      "detail": "The code moves tensors to CUDA but no GPU model, memory size or driver version is stated, so the compute budget of a reproduction is unbounded.",
+      "author_dependent": false,
+      "evidence": [
+        {
+          "kind": "code",
+          "ref": "repository-wide scan",
+          "text": "",
+          "detail": ""
+        }
+      ]
+    },
+    {
+      "rule_id": "RC10",
+      "title": "No tests",
+      "severity": "info",
+      "detail": "Nothing verifies the implementation against known-good behaviour, so a silent bug in the pipeline looks exactly like a reproduction failure.",
+      "author_dependent": false,
+      "evidence": [
+        {
+          "kind": "code",
+          "ref": "repository-wide scan",
+          "text": "",
+          "detail": ""
+        }
+      ]
+    },
+    {
+      "rule_id": "RC15",
+      "title": "No licence file",
+      "severity": "info",
+      "detail": "Without an explicit licence the code is all-rights-reserved by default, which blocks reuse and redistribution even when it runs.",
+      "author_dependent": false,
+      "evidence": [
+        {
+          "kind": "code",
+          "ref": "repository root",
+          "text": "",
+          "detail": ""
+        }
+      ]
+    }
+  ],
+  "next_actions": [
+    "[RC02] Dependencies are not version-pinned — requirements.txt",
+    "[RC03] Absolute filesystem paths in source — evaluate.py:16",
+    "[RC13] Imports not declared in any manifest — evaluate.py:9",
+    "[RC17] Paper claims with no code counterpart — 4.2 Detection transfer (prose)",
+    "[C02] Find or implement 'mAP' for coco (paper reports 0.41)."
+  ]
+}

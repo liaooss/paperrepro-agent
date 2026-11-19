@@ -1,0 +1,37 @@
+\documentclass{article}
+
+\title{Repro Test Paper}
+\author{A. Author}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+We study whether small models can match large ones on standard benchmarks.
+\end{abstract}
+
+\section{Introduction}
+Reproducibility is hard. We report 88.4 accuracy on CIFAR-10 in passing.
+
+\section{Method}
+We train for 30 epochs with AdamW and a batch size of 256.
+
+\section{Experiments}
+\subsection{Main results}
+
+\begin{table}[t]
+\caption{Results on CIFAR-10.}
+\begin{tabular}{lcc}
+\hline
+Method & Accuracy & F1 \\
+\hline
+ResNet-18 & 94.1 & 0.93 \\
+Ours & 95.3 & 0.95 \\
+\hline
+\end{tabular}
+\end{table}
+
+\subsection{Ablations}
+Removing the distillation loss costs 1.2 accuracy points on average.
+
+\end{document}
