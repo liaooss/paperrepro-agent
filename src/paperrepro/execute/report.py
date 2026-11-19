@@ -90,8 +90,13 @@ def render_run_markdown(assessment: "RunAssessment") -> str:
                 "A mismatch is a question for the authors, not a verdict: it can be a stale README, "
                 "a different experiment in the same repository, or a real discrepancy."
             )
+        elif any(c.status == "MATCH" for c in audit):
+            add("Every parameter the paper states that could be matched agrees with the code.")
         else:
-            add("Every parameter the paper states agrees with the code.")
+            add(
+                "None of the paper's stated parameters could be matched to a value in the code, "
+                "so this audit is inconclusive rather than clean."
+            )
         add("")
     else:
         add("## Consistency audit — paper versus code")
@@ -116,7 +121,8 @@ def render_run_markdown(assessment: "RunAssessment") -> str:
     add(f"| Wall clock | {run.duration_s / 60:.1f} min |")
     add(f"| Local disk | {run.disk_gb:.1f} GB |")
     add(f"| Recipe source | {assessment.recipe.source} |")
-    add(f"| Level | L2 evaluation (released weights, no training) |")
+    level = "L2 - released weights, no training" if "L2" in assessment.recipe.notes else "execution plan"
+    add(f"| Level | {level} |")
     add("")
 
     if run.status != "ok":

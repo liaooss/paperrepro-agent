@@ -2,6 +2,47 @@
 
 Newest first. Each entry records what changed, what broke, and what is next.
 
+## 2026-11-19 - Phase 1 close-out: the failing case
+
+**Done**
+
+- Second case, chosen because it *cannot* be verified: MIMIC-III benchmarks.
+  Static verdict **R1** (`RC05`, credential-gated PhysioNet data); executed
+  attempt **INSUFFICIENT_EVIDENCE** (`ENV_CONFLICT`, `tensorflow==1.15.0` has no
+  wheel for the current interpreter). Artifacts committed under
+  `examples/cases/mimic3-benchmarks/`.
+- `assess` now accepts paper URLs, like `run` does.
+- `RC05` recognises credential-gated data (`physionet`, data use agreements,
+  "acquire the data yourself"), which is what makes R1 correct here.
+- Viability can no longer recommend a run that produced no measurement.
+- The report distinguishes "every parameter agrees" from "no parameter could be
+  compared"; the `Level` row is no longer hardcoded to L2.
+- Learning-rate parsing rejects bare integers.
+
+**Broke and fixed**
+
+- The first version of the failing case reported "Every parameter the paper
+  states agrees with the code" while zero parameters had a code value.
+- It also recommended the paper "usable with conditions" at exactly 2.5/5 for a
+  run that never measured anything. A run without a measurement is now always
+  `do not use as a baseline yet`.
+- The audit extracted `learning_rate = 1` from the phrase "learning rate and
+  beta 1". Rates must now contain a decimal point or exponent.
+
+**Blocked**
+
+- Docker backend cannot be exercised: Docker Desktop is installed, but WSL2 has
+  no distribution, so the Linux engine returns 500. Fixing this needs
+  `wsl --install` with administrator rights and a reboot - a user action, not a
+  code change. The `local` (venv) backend is the fallback and is what both cases
+  used.
+
+**Next**
+
+- Phase 2: bounded repair loop for environment and path failures, plus plan
+  inference for config-driven repositories.
+- A real case that reaches `BLOCKED` (missing checkpoint at runtime).
+
 ## 2026-11-19 - Phase 1 engine: planning, audit, status
 
 **Done**

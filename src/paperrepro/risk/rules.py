@@ -41,7 +41,9 @@ RULES: list[tuple[str, str, str]] = [
 _MANUAL_DATA = re.compile(
     r"(google\s*drive|drive\.google|baidu|pan\.baidu|onedrive|dropbox|"
     r"request\s+access|upon\s+request|contact\s+the\s+authors|send\s+an\s+email|"
-    r"registration|sign\s+the\s+form|fill\s+(in|out)\s+the\s+form)",
+    r"registration|sign\s+the\s+form|fill\s+(in|out)\s+the\s+form|"
+    r"acquire\s+the\s+data|data\s+use\s+agreement|credential|physionet|"
+    r"licen[cs]e\s+agreement|restricted\s+access)",
     re.IGNORECASE,
 )
 _IMPORT = re.compile(r"^[ \t]*(?:from[ \t]+([A-Za-z_]\w*)|import[ \t]+([A-Za-z_]\w*(?:[ \t]*,[ \t]*[A-Za-z_]\w*)*))", re.MULTILINE)

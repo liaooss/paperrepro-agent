@@ -1,4 +1,4 @@
-"""Data structures shared by every stage of the pipeline.
+﻿"""Data structures shared by every stage of the pipeline.
 
 The design rule for this module: a claim or a finding may never carry a bare
 sentence. It carries :class:`Evidence` objects, and each one points at either a
@@ -36,7 +36,7 @@ VERDICTS: tuple[str, ...] = ("R0", "R1", "R2", "R3")
 VERDICT_LABELS: dict[str, str] = {
     "R3": "directly reproducible",
     "R2": "reproducible after engineering work",
-    "R1": "needs author-supplied assets",
+    "R1": "needs assets outside the release",
     "R0": "not reproducible from what was released",
 }
 

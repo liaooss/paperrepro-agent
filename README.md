@@ -1,4 +1,4 @@
-# PaperRepro
+﻿# PaperRepro
 
 [![CI](https://github.com/liaooss/paperrepro-agent/actions/workflows/ci.yml/badge.svg)](https://github.com/liaooss/paperrepro-agent/actions/workflows/ci.yml)
 [![License: MIT](https://img.shields.io/badge/license-MIT-yellow.svg)](LICENSE)
@@ -103,6 +103,13 @@ in the same repository, or a real discrepancy.
 
 **DistilBERT / SST-2** — paper says 91.3 (Table 2), measured **91.06**,
 delta **-0.24 points**, status **REPRODUCED**, viability **4.3/5**.
+
+A second case fails honestly and says why: MIMIC-III benchmarks cannot be
+verified at all — credential-gated PhysioNet data, plus a 	ensorflow==1.15.0
+pin that has no wheel on a current interpreter. The static verdict is R1, the
+executed status is `INSUFFICIENT_EVIDENCE`, and the recommendation is *do not
+use as a baseline yet*. Failure is reported as a finding, not as a verdict on
+the paper: [`examples/cases/mimic3-benchmarks`](examples/cases/mimic3-benchmarks/README.md).
 
 Full report, including the three things that broke before the number appeared:
 [`examples/cases/distilbert-sst2`](examples/cases/distilbert-sst2/README.md) ·

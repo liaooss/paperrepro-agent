@@ -1,4 +1,4 @@
-# Roadmap
+﻿# Roadmap
 
 Status as of 2026-11-19. Phases follow `docs/PROJECT_PLAN.md`.
 
@@ -16,8 +16,9 @@ Status as of 2026-11-19. Phases follow `docs/PROJECT_PLAN.md`.
 | Consistency audit (paper vs code) | first version, 6 parameter families |
 | Report: Markdown + JSON + artifacts | done |
 | Case that reproduces (DistilBERT / SST-2) | **done** |
-| Case that fails honestly | not yet |
+| Case that fails honestly (MIMIC-III / ENV_CONFLICT) | **done** |
 | Automatic plan inference | works on conventional repositories, refuses otherwise |
+| BLOCKED path exercised by a real case (missing weights at runtime) | not yet - only unit tested |
 
 **Exit criterion:** two real cases, one success and one honest failure, both
 committed with artifacts. One of the two must run from an inferred plan.

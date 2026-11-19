@@ -87,3 +87,42 @@ paperrepro run https://ar5iv.labs.arxiv.org/html/1910.01108 \
 
 Artifacts for this exact run are committed under
 `examples/cases/distilbert-sst2/result/`.
+
+---
+
+# Case 2: MIMIC-III benchmarks — the failure
+
+A tool that has only ever seen success has never been tested. The second case is
+a real release that cannot be verified, and the point is *how* that is reported.
+
+| | |
+|---|---|
+| Paper | *Multitask learning and benchmarking with clinical time series data* (arXiv:1703.07771) |
+| Release | `YerevaNN/mimic3-benchmarks` |
+| Static verdict | **R1** — `RC05` dataset requires manual or restricted acquisition |
+| Executed status | **INSUFFICIENT_EVIDENCE** — `ENV_CONFLICT` |
+| Viability | 2.5 / 5 — *do not use as a baseline yet* |
+
+## Two independent reasons
+
+1. The README states: *"We do not provide the MIMIC-III data itself. You must
+   acquire the data yourself from https://mimic.physionet.org/."* PhysioNet is
+   credential-gated; the data cannot be part of an automated reproduction.
+2. The release pins `tensorflow==1.15.0` and `Keras==2.1.2`, a Python 3.7 stack.
+   On a current interpreter the install dies with
+   `ERROR: No matching distribution found for tensorflow==1.15.0`.
+
+## What the tool refused to do
+
+- It did not report `NOT_REPRODUCED`. Our inability to build a 2019 environment
+  says nothing about the paper's results.
+- It did not recommend the paper "with conditions" just because the arithmetic
+  landed at 2.5/5. A run with no measurement cannot be recommended at all.
+- It did not paraphrase the failure. The resolver's own line is in the report
+  and in `examples/cases/mimic3-benchmarks/result/install.log`.
+
+## What remains unexercised
+
+`BLOCKED` (missing checkpoints, data unavailable at runtime) is covered by unit
+tests but no real case has produced it yet; this case stops earlier, at
+environment build time. Recorded as an open item in `docs/ROADMAP.md`.

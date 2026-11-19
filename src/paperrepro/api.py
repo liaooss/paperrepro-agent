@@ -46,6 +46,17 @@ class Assessment:
         return paths
 
 
+def _fetch_paper(url: str) -> str:
+    """Download a paper URL once, so ``assess`` accepts the same inputs as ``run``."""
+    import tempfile
+    from pathlib import Path
+
+    from .execute.case import fetch_paper
+
+    target = Path(tempfile.mkdtemp(prefix="paperrepro-paper-"))
+    return str(fetch_paper(url, target))
+
+
 def _facts(sc: Scorecard) -> str:
     """A compact, factual digest the LLM is allowed to talk about."""
     lines = [
@@ -83,6 +94,8 @@ def assess(
         claim can reach the executable (E1) level.
     """
     settings = settings or Settings.from_env()
+    if str(paper).startswith(("http://", "https://")):
+        paper = _fetch_paper(str(paper))
     doc = load_paper(paper)
     scan = scan_repo(repo, settings)
     claims = extract_claims(doc)

@@ -106,6 +106,9 @@ def _paper_hits(doc: PaperDoc) -> dict[str, tuple[str, str]]:
                 continue
             for match in re.finditer(pattern, body, re.IGNORECASE):
                 raw = match.group(1).strip()
+                if param == "learning_rate" and not re.search(r"[.eE]", raw):
+                    # 'learning rate and beta 1' is not a learning rate of 1.
+                    continue
                 bounds = _PLAUSIBLE.get(param)
                 if bounds is not None:
                     try:
@@ -141,6 +144,9 @@ def _code_hits(scan: RepoScan) -> dict[str, tuple[str, str]]:
                 continue
             for match in re.finditer(pattern, f.text, re.IGNORECASE):
                 raw = match.group(1).strip()
+                if param == "learning_rate" and not re.search(r"[.eE]", raw):
+                    # 'learning rate and beta 1' is not a learning rate of 1.
+                    continue
                 bounds = _PLAUSIBLE.get(param)
                 if bounds is not None:
                     try:

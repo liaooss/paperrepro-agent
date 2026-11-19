@@ -1,9 +1,27 @@
-# Changelog
+﻿# Changelog
 
 All notable changes to this project are documented here. The format follows
 [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and the project adheres
 to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.3.1] - 2026-11-19
+
+The second case: a release that cannot be verified, and a report that says so
+without turning it into a verdict about the paper.
+
+### Added
+
+- examples/cases/mimic3-benchmarks/ - MIMIC-III benchmarks, static verdict R1
+  (credential-gated data) and executed status INSUFFICIENT_EVIDENCE
+  (ENV_CONFLICT, 	ensorflow==1.15.0 unavailable on the current interpreter).
+- paperrepro assess accepts paper URLs, matching un.
+
+### Fixed
+
+- Viability can no longer recommend a run that produced no measurement.
+- RC05 recognises credential-gated data sources (PhysioNet, data use agreements).
+- The report no longer claims "every parameter agrees" when none could be compared.
+- Learning-rate parsing no longer accepts a bare integer.
 ## [0.3.0] - 2026-11-19
 
 PaperRepro. The project is renamed and the engine learns to plan, audit and

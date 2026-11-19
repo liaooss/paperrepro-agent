@@ -1,0 +1,788 @@
+{
+  "schema": "paperrepro/run/v1",
+  "name": "mimic3-benchmarks",
+  "paper": "E:\\Projects\\new-project\\.scratch\\case-b3\\paper\\paper.html",
+  "repo": ".scratch\\mimic3",
+  "recipe": {
+    "name": "mimic3-benchmarks",
+    "eval_cmd": "{python} -m mimic3benchmark.scripts.extract_subjects data/root/ data/root/",
+    "install": [
+      "{pip} install -r requirements.txt"
+    ],
+    "data": [],
+    "python": "3.14",
+    "metric": "accuracy",
+    "metric_regex": "",
+    "tolerance_abs": 0.5,
+    "tolerance_rel": 0.01,
+    "timeout_minutes": 15,
+    "budget_gb": 5.0,
+    "source": "curated",
+    "notes": "The release pins tensorflow==1.15.0 and Keras==2.1.2 (Python 3.7 era) and its README states the MIMIC-III data must be acquired from PhysioNet by the reader. Either constraint alone is enough to stop a reproduction on a modern machine.",
+    "claim_ids": [],
+    "env": {},
+    "harness_dir": "",
+    "target": {}
+  },
+  "plan": "plan: mimic3-benchmarks (source: curated)\n  install 1: {pip} install -r requirements.txt\n  eval      : {python} -m mimic3benchmark.scripts.extract_subjects data/root/ data/root/\n  notes     : The release pins tensorflow==1.15.0 and Keras==2.1.2 (Python 3.7 era) and its README states the MIMIC-III data must be acquired from PhysioNet by the reader. Either constraint alone is enough to stop a reproduction on a modern machine.",
+  "status": "INSUFFICIENT_EVIDENCE",
+  "status_reason": "the run failed before producing a measurement (ENV_CONFLICT)",
+  "run": {
+    "recipe": "mimic3-benchmarks",
+    "backend": "local",
+    "status": "failed",
+    "failure": "ENV_CONFLICT",
+    "failure_detail": "ERROR: No matching distribution found for tensorflow==1.15.0",
+    "metrics": {},
+    "duration_s": 2.8,
+    "disk_gb": 0.04,
+    "artifacts": "E:\\Projects\\new-project\\.scratch\\case-b3\\artifacts",
+    "workdir": "E:\\Projects\\new-project\\.scratch\\mimic3",
+    "commands": [
+      {
+        "cmd": "\"E:\\Projects\\new-project\\.scratch\\mimic3\\.paperrepro-venv\\Scripts\\python.exe\" -m pip install -r requirements.txt",
+        "exit_code": 1,
+        "duration_s": 2.83,
+        "timed_out": false,
+        "log_path": "E:\\Projects\\new-project\\.scratch\\case-b3\\artifacts\\01-install.log"
+      }
+    ]
+  },
+  "claims": [
+    {
+      "id": "C01",
+      "metric": "auc",
+      "raw_metric": "AUC",
+      "value": "0.91",
+      "row_label": "(in-text)",
+      "dataset": "",
+      "split": "",
+      "role": "paper",
+      "level": "X",
+      "gaps": [],
+      "notes": "Extracted from prose, not from a table; verify the surrounding protocol.",
+      "evidence": [
+        {
+          "kind": "paper",
+          "ref": "Decompensation prediction (prose)",
+          "text": "This figure shows that even a model with 0.91 AUC-ROC can make trivial mistakes and there is a lot of room for improvement.",
+          "detail": ""
+        }
+      ],
+      "code_evidence": []
+    },
+    {
+      "id": "C02",
+      "metric": "auc",
+      "raw_metric": "AUC-ROC",
+      "value": "0.043",
+      "row_label": "Other upper respiratory disease",
+      "dataset": "",
+      "split": "",
+      "role": "reference",
+      "level": "X",
+      "gaps": [],
+      "notes": "",
+      "evidence": [
+        {
+          "kind": "paper",
+          "ref": "Table 2 / row 'Other upper respiratory disease' / column 'AUC-ROC'",
+          "text": "Other upper respiratory disease: AUC-ROC = 0.043",
+          "detail": ""
+        }
+      ],
+      "code_evidence": []
+    },
+    {
+      "id": "C03",
+      "metric": "auc",
+      "raw_metric": "AUC-ROC",
+      "value": "0.057",
+      "row_label": "Other lower respiratory disease",
+      "dataset": "",
+      "split": "",
+      "role": "reference",
+      "level": "X",
+      "gaps": [],
+      "notes": "",
+      "evidence": [
+        {
+          "kind": "paper",
+          "ref": "Table 2 / row 'Other lower respiratory disease' / column 'AUC-ROC'",
+          "text": "Other lower respiratory disease: AUC-ROC = 0.057",
+          "detail": ""
+        }
+      ],
+      "code_evidence": []
+    },
+    {
+      "id": "C04",
+      "metric": "auc",
+      "raw_metric": "AUC-ROC",
+      "value": "0.066",
+      "row_label": "Acute cerebrovascular disease",
+      "dataset": "",
+      "split": "",
+      "role": "reference",
+      "level": "X",
+      "gaps": [],
+      "notes": "",
+      "evidence": [
+        {
+          "kind": "paper",
+          "ref": "Table 2 / row 'Acute cerebrovascular disease' / column 'AUC-ROC'",
+          "text": "Acute cerebrovascular disease: AUC-ROC = 0.066",
+          "detail": ""
+        }
+      ],
+      "code_evidence": []
+    },
+    {
+      "id": "C05",
+      "metric": "auc",
+      "raw_metric": "AUC-ROC",
+      "value": "0.071",
+      "row_label": "Conduction disorders",
+      "dataset": "",
+      "split": "",
+      "role": "reference",
+      "level": "X",
+      "gaps": [],
+      "notes": "",
+      "evidence": [
+        {
+          "kind": "paper",
+          "ref": "Table 2 / row 'Conduction disorders' / column 'AUC-ROC'",
+          "text": "Conduction disorders: AUC-ROC = 0.071",
+          "detail": ""
+        }
+      ],
+      "code_evidence": []
+    },
+    {
+      "id": "C06",
+      "metric": "auc",
+      "raw_metric": "AUC-ROC",
+      "value": "0.079",
+      "row_label": "Gastrointestinal hemorrhage",
+      "dataset": "",
+      "split": "",
+      "role": "reference",
+      "level": "X",
+      "gaps": [],
+      "notes": "",
+      "evidence": [
+        {
+          "kind": "paper",
+          "ref": "Table 2 / row 'Gastrointestinal hemorrhage' / column 'AUC-ROC'",
+          "text": "Gastrointestinal hemorrhage: AUC-ROC = 0.079",
+          "detail": ""
+        }
+      ],
+      "code_evidence": []
+    },
+    {
+      "id": "C07",
+      "metric": "auc",
+      "raw_metric": "AUC-ROC",
+      "value": "0.082",
+      "row_label": "Shock",
+      "dataset": "",
+      "split": "",
+      "role": "reference",
+      "level": "X",
+      "gaps": [],
+      "notes": "",
+      "evidence": [
+        {
+          "kind": "paper",
+          "ref": "Table 2 / row 'Shock' / column 'AUC-ROC'",
+          "text": "Shock: AUC-ROC = 0.082",
+          "detail": ""
+        }
+      ],
+      "code_evidence": []
+    },
+    {
+      "id": "C08",
+      "metric": "auc",
+      "raw_metric": "AUC-ROC",
+      "value": "0.089",
+      "row_label": "Other liver diseases",
+      "dataset": "",
+      "split": "",
+      "role": "reference",
+      "level": "X",
+      "gaps": [],
+      "notes": "",
+      "evidence": [
+        {
+          "kind": "paper",
+          "ref": "Table 2 / row 'Other liver diseases' / column 'AUC-ROC'",
+          "text": "Other liver diseases: AUC-ROC = 0.089",
+          "detail": ""
+        }
+      ],
+      "code_evidence": []
+    },
+    {
+      "id": "C09",
+      "metric": "auc",
+      "raw_metric": "AUC-ROC",
+      "value": "0.091",
+      "row_label": "Pleurisy; pneumothorax; pulmonary collapse",
+      "dataset": "",
+      "split": "",
+      "role": "reference",
+      "level": "X",
+      "gaps": [],
+      "notes": "",
+      "evidence": [
+        {
+          "kind": "paper",
+          "ref": "Table 2 / row 'Pleurisy; pneumothorax; pulmonary collapse' / column 'AUC-ROC'",
+          "text": "Pleurisy; pneumothorax; pulmonary collapse: AUC-ROC = 0.091",
+          "detail": ""
+        }
+      ],
+      "code_evidence": []
+    },
+    {
+      "id": "C10",
+      "metric": "auc",
+      "raw_metric": "AUC-ROC",
+      "value": "0.094",
+      "row_label": "Diabetes mellitus with complications",
+      "dataset": "",
+      "split": "",
+      "role": "reference",
+      "level": "X",
+      "gaps": [],
+      "notes": "",
+      "evidence": [
+        {
+          "kind": "paper",
+          "ref": "Table 2 / row 'Diabetes mellitus with complications' / column 'AUC-ROC'",
+          "text": "Diabetes mellitus with complications: AUC-ROC = 0.094",
+          "detail": ""
+        }
+      ],
+      "code_evidence": []
+    },
+    {
+      "id": "C11",
+      "metric": "auc",
+      "raw_metric": "AUC-ROC",
+      "value": "0.108",
+      "row_label": "Acute myocardial infarction",
+      "dataset": "",
+      "split": "",
+      "role": "reference",
+      "level": "X",
+      "gaps": [],
+      "notes": "",
+      "evidence": [
+        {
+          "kind": "paper",
+          "ref": "Table 2 / row 'Acute myocardial infarction' / column 'AUC-ROC'",
+          "text": "Acute myocardial infarction: AUC-ROC = 0.108",
+          "detail": ""
+        }
+      ],
+      "code_evidence": []
+    },
+    {
+      "id": "C12",
+      "metric": "auc",
+      "raw_metric": "AUC-ROC",
+      "value": "0.126",
+      "row_label": "Chronic obstructive pulmonary disease",
+      "dataset": "",
+      "split": "",
+      "role": "reference",
+      "level": "X",
+      "gaps": [],
+      "notes": "",
+      "evidence": [
+        {
+          "kind": "paper",
+          "ref": "Table 2 / row 'Chronic obstructive pulmonary disease' / column 'AUC-ROC'",
+          "text": "Chronic obstructive pulmonary disease: AUC-ROC = 0.126",
+          "detail": ""
+        }
+      ],
+      "code_evidence": []
+    },
+    {
+      "id": "C13",
+      "metric": "auc",
+      "raw_metric": "AUC-ROC",
+      "value": "0.130",
+      "row_label": "Hypertension with complications",
+      "dataset": "",
+      "split": "",
+      "role": "reference",
+      "level": "X",
+      "gaps": [],
+      "notes": "",
+      "evidence": [
+        {
+          "kind": "paper",
+          "ref": "Table 2 / row 'Hypertension with complications' / column 'AUC-ROC'",
+          "text": "Hypertension with complications: AUC-ROC = 0.130",
+          "detail": ""
+        }
+      ],
+      "code_evidence": []
+    },
+    {
+      "id": "C14",
+      "metric": "auc",
+      "raw_metric": "AUC-ROC",
+      "value": "0.132",
+      "row_label": "Chronic kidney disease",
+      "dataset": "",
+      "split": "",
+      "role": "reference",
+      "level": "X",
+      "gaps": [],
+      "notes": "",
+      "evidence": [
+        {
+          "kind": "paper",
+          "ref": "Table 2 / row 'Chronic kidney disease' / column 'AUC-ROC'",
+          "text": "Chronic kidney disease: AUC-ROC = 0.132",
+          "detail": ""
+        }
+      ],
+      "code_evidence": []
+    },
+    {
+      "id": "C15",
+      "metric": "auc",
+      "raw_metric": "AUC-ROC",
+      "value": "0.135",
+      "row_label": "Pneumonia",
+      "dataset": "",
+      "split": "",
+      "role": "reference",
+      "level": "X",
+      "gaps": [],
+      "notes": "",
+      "evidence": [
+        {
+          "kind": "paper",
+          "ref": "Table 2 / row 'Pneumonia' / column 'AUC-ROC'",
+          "text": "Pneumonia: AUC-ROC = 0.135",
+          "detail": ""
+        }
+      ],
+      "code_evidence": []
+    },
+    {
+      "id": "C16",
+      "metric": "auc",
+      "raw_metric": "AUC-ROC",
+      "value": "0.139",
+      "row_label": "Septicemia (except in labor)",
+      "dataset": "",
+      "split": "",
+      "role": "reference",
+      "level": "X",
+      "gaps": [],
+      "notes": "",
+      "evidence": [
+        {
+          "kind": "paper",
+          "ref": "Table 2 / row 'Septicemia (except in labor)' / column 'AUC-ROC'",
+          "text": "Septicemia (except in labor): AUC-ROC = 0.139",
+          "detail": ""
+        }
+      ],
+      "code_evidence": []
+    },
+    {
+      "id": "C17",
+      "metric": "auc",
+      "raw_metric": "AUC-ROC",
+      "value": "0.177",
+      "row_label": "Respiratory failure; insufficiency; arrest",
+      "dataset": "",
+      "split": "",
+      "role": "reference",
+      "level": "X",
+      "gaps": [],
+      "notes": "",
+      "evidence": [
+        {
+          "kind": "paper",
+          "ref": "Table 2 / row 'Respiratory failure; insufficiency; arrest' / column 'AUC-ROC'",
+          "text": "Respiratory failure; insufficiency; arrest: AUC-ROC = 0.177",
+          "detail": ""
+        }
+      ],
+      "code_evidence": []
+    },
+    {
+      "id": "C18",
+      "metric": "auc",
+      "raw_metric": "AUC-ROC",
+      "value": "0.192",
+      "row_label": "Diabetes mellitus without complication",
+      "dataset": "",
+      "split": "",
+      "role": "reference",
+      "level": "X",
+      "gaps": [],
+      "notes": "",
+      "evidence": [
+        {
+          "kind": "paper",
+          "ref": "Table 2 / row 'Diabetes mellitus without complication' / column 'AUC-ROC'",
+          "text": "Diabetes mellitus without complication: AUC-ROC = 0.192",
+          "detail": ""
+        }
+      ],
+      "code_evidence": []
+    },
+    {
+      "id": "C19",
+      "metric": "auc",
+      "raw_metric": "AUC-ROC",
+      "value": "0.212",
+      "row_label": "Acute and unspecified renal failure",
+      "dataset": "",
+      "split": "",
+      "role": "reference",
+      "level": "X",
+      "gaps": [],
+      "notes": "",
+      "evidence": [
+        {
+          "kind": "paper",
+          "ref": "Table 2 / row 'Acute and unspecified renal failure' / column 'AUC-ROC'",
+          "text": "Acute and unspecified renal failure: AUC-ROC = 0.212",
+          "detail": ""
+        }
+      ],
+      "code_evidence": []
+    },
+    {
+      "id": "C20",
+      "metric": "auc",
+      "raw_metric": "AUC-ROC",
+      "value": "0.213",
+      "row_label": "Complications of surgical/medical care",
+      "dataset": "",
+      "split": "",
+      "role": "reference",
+      "level": "X",
+      "gaps": [],
+      "notes": "",
+      "evidence": [
+        {
+          "kind": "paper",
+          "ref": "Table 2 / row 'Complications of surgical/medical care' / column 'AUC-ROC'",
+          "text": "Complications of surgical/medical care: AUC-ROC = 0.213",
+          "detail": ""
+        }
+      ],
+      "code_evidence": []
+    },
+    {
+      "id": "C21",
+      "metric": "auc",
+      "raw_metric": "AUC-ROC",
+      "value": "0.265",
+      "row_label": "Fluid and electrolyte disorders",
+      "dataset": "",
+      "split": "",
+      "role": "reference",
+      "level": "X",
+      "gaps": [],
+      "notes": "",
+      "evidence": [
+        {
+          "kind": "paper",
+          "ref": "Table 2 / row 'Fluid and electrolyte disorders' / column 'AUC-ROC'",
+          "text": "Fluid and electrolyte disorders: AUC-ROC = 0.265",
+          "detail": ""
+        }
+      ],
+      "code_evidence": []
+    },
+    {
+      "id": "C22",
+      "metric": "auc",
+      "raw_metric": "AUC-ROC",
+      "value": "0.268",
+      "row_label": "Congestive heart failure; nonhypertensive",
+      "dataset": "",
+      "split": "",
+      "role": "reference",
+      "level": "X",
+      "gaps": [],
+      "notes": "",
+      "evidence": [
+        {
+          "kind": "paper",
+          "ref": "Table 2 / row 'Congestive heart failure; nonhypertensive' / column 'AUC-ROC'",
+          "text": "Congestive heart failure; nonhypertensive: AUC-ROC = 0.268",
+          "detail": ""
+        }
+      ],
+      "code_evidence": []
+    },
+    {
+      "id": "C23",
+      "metric": "auc",
+      "raw_metric": "AUC-ROC",
+      "value": "0.289",
+      "row_label": "Disorders of lipid metabolism",
+      "dataset": "",
+      "split": "",
+      "role": "reference",
+      "level": "X",
+      "gaps": [],
+      "notes": "",
+      "evidence": [
+        {
+          "kind": "paper",
+          "ref": "Table 2 / row 'Disorders of lipid metabolism' / column 'AUC-ROC'",
+          "text": "Disorders of lipid metabolism: AUC-ROC = 0.289",
+          "detail": ""
+        }
+      ],
+      "code_evidence": []
+    },
+    {
+      "id": "C24",
+      "metric": "auc",
+      "raw_metric": "AUC-ROC",
+      "value": "0.323",
+      "row_label": "Cardiac dysrhythmias",
+      "dataset": "",
+      "split": "",
+      "role": "reference",
+      "level": "X",
+      "gaps": [],
+      "notes": "",
+      "evidence": [
+        {
+          "kind": "paper",
+          "ref": "Table 2 / row 'Cardiac dysrhythmias' / column 'AUC-ROC'",
+          "text": "Cardiac dysrhythmias: AUC-ROC = 0.323",
+          "detail": ""
+        }
+      ],
+      "code_evidence": []
+    },
+    {
+      "id": "C25",
+      "metric": "auc",
+      "raw_metric": "AUC-ROC",
+      "value": "0.331",
+      "row_label": "Coronary atherosclerosis and related",
+      "dataset": "",
+      "split": "",
+      "role": "reference",
+      "level": "X",
+      "gaps": [],
+      "notes": "",
+      "evidence": [
+        {
+          "kind": "paper",
+          "ref": "Table 2 / row 'Coronary atherosclerosis and related' / column 'AUC-ROC'",
+          "text": "Coronary atherosclerosis and related: AUC-ROC = 0.331",
+          "detail": ""
+        }
+      ],
+      "code_evidence": []
+    },
+    {
+      "id": "C26",
+      "metric": "auc",
+      "raw_metric": "AUC-ROC",
+      "value": "0.423",
+      "row_label": "Essential hypertension",
+      "dataset": "",
+      "split": "",
+      "role": "reference",
+      "level": "X",
+      "gaps": [],
+      "notes": "",
+      "evidence": [
+        {
+          "kind": "paper",
+          "ref": "Table 2 / row 'Essential hypertension' / column 'AUC-ROC'",
+          "text": "Essential hypertension: AUC-ROC = 0.423",
+          "detail": ""
+        }
+      ],
+      "code_evidence": []
+    }
+  ],
+  "audit": [
+    {
+      "param": "optimizer",
+      "paper_value": "ADAM",
+      "code_value": "",
+      "status": "PAPER_ONLY",
+      "paper_ref": "Experiments, Model selection and Evaluation: \"ADAM\"",
+      "code_ref": "",
+      "note": "the paper states it but no config value was found"
+    }
+  ],
+  "outcomes": [
+    {
+      "claim_id": "C01",
+      "metric": "auc",
+      "raw_metric": "AUC",
+      "paper_value": "0.91",
+      "measured": null,
+      "delta": null,
+      "status": "NOT_RUN",
+      "note": "the run did not report this metric"
+    }
+  ],
+  "outcome_summary": {
+    "NOT_RUN": 1
+  },
+  "viability": {
+    "score": 2.5,
+    "recommendation": "AVOID",
+    "label": "do not use as a baseline yet",
+    "dimensions": [
+      {
+        "name": "executability",
+        "score": 2.0,
+        "note": "run status failed (ENV_CONFLICT)"
+      },
+      {
+        "name": "fidelity",
+        "score": 0.0,
+        "note": "no claim could be compared"
+      },
+      {
+        "name": "cost",
+        "score": 2.5,
+        "note": "0 min, 0.0 GB on disk (run did not complete; cost is a lower bound)"
+      },
+      {
+        "name": "comparability",
+        "score": 3.0,
+        "note": "protocol must be checked by hand: split, preprocessing and metric definition"
+      },
+      {
+        "name": "openness",
+        "score": 5.0,
+        "note": "licence present"
+      }
+    ],
+    "blockers": [
+      "ENV_CONFLICT: ERROR: No matching distribution found for tensorflow==1.15.0",
+      "no measured value to compare against the paper"
+    ]
+  },
+  "findings": [
+    {
+      "rule_id": "RC05",
+      "title": "Dataset requires manual or restricted acquisition",
+      "severity": "blocker",
+      "detail": "The README mentions 'physionet'. Data that must be requested, registered for or downloaded by hand cannot be part of an automated reproduction, and may not be redistributable.",
+      "author_dependent": true,
+      "evidence": [
+        {
+          "kind": "code",
+          "ref": "README.md:41",
+          "text": "Here we present four public benchmarks for machine learning researchers interested in health care, built using data from the publicly available Medical Information Mart for Intensi",
+          "detail": ""
+        }
+      ]
+    },
+    {
+      "rule_id": "RC02",
+      "title": "Dependencies are not version-pinned",
+      "severity": "major",
+      "detail": "1 requirement(s) carry no version constraint, so a fresh install can resolve to versions the authors never tested. Example: tqdm",
+      "author_dependent": false,
+      "evidence": [
+        {
+          "kind": "code",
+          "ref": "requirements.txt",
+          "text": "tqdm",
+          "detail": "unpinned requirement"
+        }
+      ]
+    },
+    {
+      "rule_id": "RC13",
+      "title": "Imports not declared in any manifest",
+      "severity": "major",
+      "detail": "2 module(s) are imported but absent from every dependency file (imp, scipy). A clean environment will fail at import time.",
+      "author_dependent": false,
+      "evidence": [
+        {
+          "kind": "code",
+          "ref": "mimic3models/feature_extractor.py:2",
+          "text": "from scipy.stats import skew",
+          "detail": "import scipy"
+        },
+        {
+          "kind": "code",
+          "ref": "mimic3models/decompensation/main.py:4",
+          "text": "import imp",
+          "detail": "import imp"
+        }
+      ]
+    },
+    {
+      "rule_id": "RC17",
+      "title": "Paper claims with no code counterpart",
+      "severity": "major",
+      "detail": "26 claim(s) have no implementation, dataset or value in the repository (C01, C02, C03, C04, C05, C06). These results cannot be reproduced from this release.",
+      "author_dependent": false,
+      "evidence": [
+        {
+          "kind": "paper",
+          "ref": "Decompensation prediction (prose)",
+          "text": "AUC",
+          "detail": ""
+        },
+        {
+          "kind": "paper",
+          "ref": "Table 2 / row 'Other upper respiratory disease' / column 'AUC-ROC'",
+          "text": "AUC-ROC",
+          "detail": ""
+        },
+        {
+          "kind": "paper",
+          "ref": "Table 2 / row 'Other lower respiratory disease' / column 'AUC-ROC'",
+          "text": "AUC-ROC",
+          "detail": ""
+        },
+        {
+          "kind": "paper",
+          "ref": "Table 2 / row 'Acute cerebrovascular disease' / column 'AUC-ROC'",
+          "text": "AUC-ROC",
+          "detail": ""
+        }
+      ]
+    },
+    {
+      "rule_id": "RC11",
+      "title": "Incomplete code markers on the execution path",
+      "severity": "minor",
+      "detail": "1 TODO/FIXME/NotImplementedError marker(s) remain in the code; any of them may sit on the path that produces the reported numbers.",
+      "author_dependent": false,
+      "evidence": [
+        {
+          "kind": "code",
+          "ref": "mimic3benchmark/scripts/validate_events.py:50",
+          "text": "# TODO: maybe we can recover HADM_ID by looking at ICUSTAY_ID",
+          "detail": ""
+        }
+      ]
+    }
+  ]
+}

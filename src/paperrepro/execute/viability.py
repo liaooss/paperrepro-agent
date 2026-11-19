@@ -152,4 +152,9 @@ def assess_viability(run, outcomes: list[ClaimOutcome], findings: list[Finding] 
     else:
         recommendation = "AVOID"
 
+    # A run that produced no measurement cannot be recommended, whatever the
+    # arithmetic says: cost and openness are not evidence about the paper.
+    if not scored and run.status != "ok":
+        recommendation = "AVOID"
+
     return Viability(score=total, recommendation=recommendation, dimensions=dims, blockers=blockers)
