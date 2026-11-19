@@ -1,4 +1,4 @@
-﻿# Contributing
+# Contributing
 
 Thanks for looking. The most valuable contribution to this project is **a release that fools it**: a (paper, code) pair where the verdict is wrong, with enough detail to see why.
 

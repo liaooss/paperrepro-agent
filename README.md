@@ -1,4 +1,4 @@
-﻿# PaperRepro
+# PaperRepro
 
 [![CI](https://github.com/liaooss/paperrepro-agent/actions/workflows/ci.yml/badge.svg)](https://github.com/liaooss/paperrepro-agent/actions/workflows/ci.yml)
 [![License: MIT](https://img.shields.io/badge/license-MIT-yellow.svg)](LICENSE)

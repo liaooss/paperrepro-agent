@@ -1,4 +1,4 @@
-﻿# Roadmap
+# Roadmap
 
 Status as of 2026-11-19. Phases follow `docs/PROJECT_PLAN.md`.
 

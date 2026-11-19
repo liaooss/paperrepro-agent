@@ -1,4 +1,4 @@
-﻿"""Runtime configuration, all of it optional and environment-driven."""
+"""Runtime configuration, all of it optional and environment-driven."""
 
 from __future__ import annotations
 

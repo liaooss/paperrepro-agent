@@ -1,4 +1,4 @@
-﻿"""LLM client: configuration, graceful degradation, JSON robustness."""
+"""LLM client: configuration, graceful degradation, JSON robustness."""
 
 import unittest
 from unittest import mock

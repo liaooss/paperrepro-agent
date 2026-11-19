@@ -1,4 +1,4 @@
-﻿"""Data structures shared by every stage of the pipeline.
+"""Data structures shared by every stage of the pipeline.
 
 The design rule for this module: a claim or a finding may never carry a bare
 sentence. It carries :class:`Evidence` objects, and each one points at either a
