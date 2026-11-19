@@ -1,5 +1,9 @@
 # reprocheck
 
+[![CI](https://github.com/liaooss/reprocheck/actions/workflows/ci.yml/badge.svg)](https://github.com/liaooss/reprocheck/actions/workflows/ci.yml)
+[![License: MIT](https://img.shields.io/badge/license-MIT-yellow.svg)](LICENSE)
+[![Python 3.10+](https://img.shields.io/badge/python-3.10%2B-blue.svg)](pyproject.toml)
+
 **Give it a paper and the code that claims to implement it. It tells you whether the results can actually be reproduced — and shows its work.**
 
 Every sentence in the output is anchored to a page, a table, or a `path:line`. No vibes, no "looks good to me".
