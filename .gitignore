@@ -13,8 +13,10 @@ venv/
 .coverage
 htmlcov/
 reproduction-assessment/
-.reprocheck-cache/
+.paperrepro-cache/
 *.log
 .DS_Store
 Thumbs.db
 .scratch/
+
+runs/

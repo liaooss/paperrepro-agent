@@ -3,9 +3,9 @@
 import unittest
 
 import helpers
-from reprocheck.align.matcher import level_counts, link_claims
-from reprocheck.ingest.repo import scan_repo
-from reprocheck.models import Claim, Evidence, SmokeReport
+from paperrepro.align.matcher import level_counts, link_claims
+from paperrepro.ingest.repo import scan_repo
+from paperrepro.models import Claim, Evidence, SmokeReport
 
 
 def _claim(metric="accuracy", value="72.3", dataset="imagenet", cid="C01"):

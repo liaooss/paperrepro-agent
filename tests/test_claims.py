@@ -3,8 +3,8 @@
 import unittest
 
 import helpers
-from reprocheck.extract.claims import extract_claims
-from reprocheck.ingest.paper import load_paper
+from paperrepro.extract.claims import extract_claims
+from paperrepro.ingest.paper import load_paper
 
 
 class TestLatexClaims(unittest.TestCase):

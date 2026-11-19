@@ -3,8 +3,8 @@
 import unittest
 
 import helpers  # noqa: F401
-from reprocheck.models import Claim, Evidence, Finding, SmokeReport
-from reprocheck.verdict.score import decide
+from paperrepro.models import Claim, Evidence, Finding, SmokeReport
+from paperrepro.verdict.score import decide
 
 GOOD_SMOKE = SmokeReport(enabled=True, syntax_ok=True, entry_ok=True, manifest_ok=True)
 NO_SMOKE = SmokeReport(enabled=False)

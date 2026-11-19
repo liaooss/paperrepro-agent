@@ -1,4 +1,4 @@
-# Contributing
+﻿# Contributing
 
 Thanks for looking. The most valuable contribution to this project is **a release that fools it**: a (paper, code) pair where the verdict is wrong, with enough detail to see why.
 
@@ -12,8 +12,8 @@ Thanks for looking. The most valuable contribution to this project is **a releas
 ## Development setup
 
 ```bash
-git clone https://github.com/liaooss/reprocheck
-cd reprocheck
+git clone https://github.com/liaooss/paperrepro-agent
+cd paperrepro
 python -m pip install -e .
 python -m unittest discover -s tests -t tests -v
 ```
@@ -22,16 +22,16 @@ No third-party runtime dependencies, by design. If a change needs one, it belong
 
 ## Adding a rule
 
-1. Write a pure function in `src/reprocheck/risk/rules.py` that takes what it needs from `RepoScan` and returns `list[Finding]`. No network, no clock, no randomness.
+1. Write a pure function in `src/paperrepro/risk/rules.py` that takes what it needs from `RepoScan` and returns `list[Finding]`. No network, no clock, no randomness.
 2. Register it in `RULES` with `(id, title, severity)` and call it from `run_rules`.
 3. Give it a test in `tests/test_rules.py` that builds the smallest repository that fires it, and one that proves it stays quiet on the demo release.
-4. Document it in `docs/RUBRIC.md` — the rubric is normative and a rule that is not in it does not exist.
+4. Document it in `docs/RUBRIC.md` 鈥?the rubric is normative and a rule that is not in it does not exist.
 
 Severity is a promise: `blocker` means a reader cannot fix it, `major` means the release is materially incomplete, `minor` means friction, `info` means context.
 
 ## Changing the verdict logic
 
-`docs/RUBRIC.md` and `verdict/score.py` must change in the same commit, plus `tests/test_score.py`. If a new outcome cannot be expressed by R0–R3, argue for a new level first in an issue.
+`docs/RUBRIC.md` and `verdict/score.py` must change in the same commit, plus `tests/test_score.py`. If a new outcome cannot be expressed by R0鈥揜3, argue for a new level first in an issue.
 
 ## Style
 

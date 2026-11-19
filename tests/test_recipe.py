@@ -6,7 +6,7 @@ import unittest
 from pathlib import Path
 
 import helpers  # noqa: F401
-from reprocheck.execute.recipe import Recipe, RecipeError, load_recipe
+from paperrepro.execute.recipe import Recipe, RecipeError, load_recipe
 
 
 class TestRecipe(unittest.TestCase):

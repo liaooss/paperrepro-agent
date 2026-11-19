@@ -3,10 +3,10 @@
 import unittest
 
 import helpers  # noqa: F401
-from reprocheck.execute.compare import ClaimOutcome
-from reprocheck.execute.runner import RunResult
-from reprocheck.execute.viability import assess_viability
-from reprocheck.models import Finding
+from paperrepro.execute.compare import ClaimOutcome
+from paperrepro.execute.runner import RunResult
+from paperrepro.execute.viability import assess_viability
+from paperrepro.models import Finding
 
 
 def _run(status="ok", failure="", duration=600.0, disk=1.0):

@@ -6,8 +6,8 @@ import unittest
 from pathlib import Path
 
 import helpers
-from reprocheck.api import assess
-from reprocheck.verdict.report import render_console, render_markdown, render_plan
+from paperrepro.api import assess
+from paperrepro.verdict.report import render_console, render_markdown, render_plan
 
 
 class TestAssessment(unittest.TestCase):
@@ -43,7 +43,7 @@ class TestAssessment(unittest.TestCase):
 
     def test_json_roundtrip(self):
         payload = json.loads(self.result.to_json())
-        self.assertEqual(payload["schema"], "reprocheck/scorecard/v1")
+        self.assertEqual(payload["schema"], "paperrepro/scorecard/v1")
         self.assertEqual(payload["verdict"], self.result.scorecard.verdict)
         self.assertTrue(payload["claims"])
         self.assertIn("findings", payload)

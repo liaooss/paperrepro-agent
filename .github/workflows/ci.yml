@@ -30,7 +30,7 @@ jobs:
         run: python -m unittest discover -s tests -t tests -v
 
       - name: End-to-end audit of the demo (must be at least R2)
-        run: python -m reprocheck assess examples/demo/paper.md --repo examples/demo/code --smoke --fail-on R1 --out build/assessment
+        run: python -m paperrepro assess examples/demo/paper.md --repo examples/demo/code --smoke --fail-on R1 --out build/assessment
 
       - name: Upload report
         if: always()

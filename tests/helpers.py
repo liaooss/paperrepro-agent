@@ -19,7 +19,7 @@ if str(SRC) not in sys.path:
 
 def make_repo(files: dict[str, str]) -> Path:
     """Create a throw-away repository whose keys are relative posix paths."""
-    tmp = Path(tempfile.mkdtemp(prefix="reprocheck-test-"))
+    tmp = Path(tempfile.mkdtemp(prefix="paperrepro-test-"))
     for rel, content in files.items():
         target = tmp / rel
         target.parent.mkdir(parents=True, exist_ok=True)
@@ -31,3 +31,11 @@ def cleanup(path: Path) -> None:
     import shutil
 
     shutil.rmtree(path, ignore_errors=True)
+
+
+def _write_paper(text: str, suffix: str = ".md") -> Path:
+    """Write a paper body to a throw-away file (name kept short for readability)."""
+    tmp = Path(tempfile.mkdtemp(prefix="paperrepro-paper-"))
+    path = tmp / ("paper" + suffix)
+    path.write_text(textwrap.dedent(text), encoding="utf-8")
+    return path

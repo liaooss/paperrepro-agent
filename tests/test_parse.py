@@ -3,8 +3,8 @@
 import unittest
 
 import helpers  # noqa: F401
-from reprocheck.execute.parse import extract_metrics
-from reprocheck.execute.recipe import Recipe
+from paperrepro.execute.parse import extract_metrics
+from paperrepro.execute.recipe import Recipe
 
 
 def _recipe(regex=""):

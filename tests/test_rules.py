@@ -3,10 +3,10 @@
 import unittest
 
 import helpers
-from reprocheck.extract.claims import extract_claims
-from reprocheck.ingest.paper import load_paper
-from reprocheck.ingest.repo import scan_repo
-from reprocheck.risk.rules import RULES, run_rules
+from paperrepro.extract.claims import extract_claims
+from paperrepro.ingest.paper import load_paper
+from paperrepro.ingest.repo import scan_repo
+from paperrepro.risk.rules import RULES, run_rules
 
 
 def _ids(findings):

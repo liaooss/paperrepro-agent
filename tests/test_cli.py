@@ -17,7 +17,7 @@ ENV["PYTHONIOENCODING"] = "utf-8"
 
 def run_cli(*args: str) -> subprocess.CompletedProcess:
     return subprocess.run(
-        [sys.executable, "-m", "reprocheck", *args],
+        [sys.executable, "-m", "paperrepro", *args],
         capture_output=True,
         text=True,
         encoding="utf-8",
@@ -59,7 +59,7 @@ class TestAssessCommand(unittest.TestCase):
             )
             self.assertEqual(proc.returncode, 0, proc.stderr)
             payload = json.loads(proc.stdout)
-            self.assertEqual(payload["schema"], "reprocheck/scorecard/v1")
+            self.assertEqual(payload["schema"], "paperrepro/scorecard/v1")
 
     def test_quiet_suppresses_summary(self):
         with tempfile.TemporaryDirectory() as tmp:
@@ -110,7 +110,7 @@ class TestOtherCommands(unittest.TestCase):
     def test_version(self):
         proc = run_cli("version")
         self.assertEqual(proc.returncode, 0)
-        self.assertIn("reprocheck", proc.stdout)
+        self.assertIn("paperrepro", proc.stdout)
 
     def test_help_without_args(self):
         proc = run_cli()

@@ -3,7 +3,7 @@
 import unittest
 
 import helpers
-from reprocheck.ingest.repo import scan_repo
+from paperrepro.ingest.repo import scan_repo
 
 
 class TestDemoRepo(unittest.TestCase):

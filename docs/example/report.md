@@ -10,7 +10,7 @@ Verdict R2 (reproducible after engineering work): 3 quantitative claim(s) from t
 | Paper | `examples\demo\paper.md` (markdown, 1 table(s)) |
 | Repository | `E:\Projects\new-project\examples\demo\code` — 10 files, python:7, docs:1, text:1, config:1 |
 | Generated | 2026-11-19T04:22:29+00:00 |
-| Tool | reprocheck 0.1.0 · rules-only (no LLM) |
+| Tool | paperrepro 0.1.0 · rules-only (no LLM) |
 
 ## Why this verdict
 
@@ -139,7 +139,7 @@ Without an explicit licence the code is all-rights-reserved by default, which bl
 ## Reproduce this assessment
 
 ```bash
-reprocheck assess examples\demo\paper.md --repo E:\Projects\new-project\examples\demo\code --smoke
+paperrepro assess examples\demo\paper.md --repo E:\Projects\new-project\examples\demo\code --smoke
 ```
 
 ## Limits of this report

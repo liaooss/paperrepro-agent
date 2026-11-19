@@ -1,11 +1,11 @@
-"""LLM client: configuration, graceful degradation, JSON robustness."""
+﻿"""LLM client: configuration, graceful degradation, JSON robustness."""
 
 import unittest
 from unittest import mock
 
 import helpers  # noqa: F401
-from reprocheck.config import Settings
-from reprocheck.llm.client import LLMClient, _parse_json
+from paperrepro.config import Settings
+from paperrepro.llm.client import LLMClient, _parse_json
 
 
 class TestSettings(unittest.TestCase):
@@ -19,9 +19,9 @@ class TestSettings(unittest.TestCase):
 
     def test_env_overrides(self):
         env = {
-            "REPROCHECK_API_KEY": "secret",
-            "REPROCHECK_MODEL": "deepseek-chat",
-            "REPROCHECK_BASE_URL": "https://api.example.com/v1/",
+            "PAPERREPRO_API_KEY": "secret",
+            "PAPERREPRO_MODEL": "deepseek-chat",
+            "PAPERREPRO_BASE_URL": "https://api.example.com/v1/",
         }
         with mock.patch.dict("os.environ", env, clear=False):
             settings = Settings.from_env()

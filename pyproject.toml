@@ -3,9 +3,9 @@ requires = ["setuptools>=68"]
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "reprocheck"
-version = "0.2.0"
-description = "Evidence-traceable reproducibility assessment for a (paper, code) pair"
+name = "paperrepro"
+version = "0.3.0"
+description = "PaperRepro: run a paper's code, compare the numbers, grade the evidence"
 readme = "README.md"
 requires-python = ">=3.10"
 license = { text = "MIT" }
@@ -31,7 +31,7 @@ pdf = ["pypdf>=4.0"]
 dev = ["pytest>=8.0"]
 
 [project.scripts]
-reprocheck = "reprocheck.cli:main"
+paperrepro = "paperrepro.cli:main"
 
 [tool.setuptools.packages.find]
 where = ["src"]

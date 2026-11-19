@@ -3,8 +3,8 @@
 import unittest
 
 import helpers  # noqa: F401
-from reprocheck.execute.compare import compare_claims, to_points
-from reprocheck.models import Claim, Evidence
+from paperrepro.execute.compare import compare_claims, to_points
+from paperrepro.models import Claim, Evidence
 
 
 def _claim(value="91.3", metric="accuracy", role="paper", cid="C01"):

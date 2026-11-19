@@ -9,7 +9,7 @@ demo/
 Run it:
 
 ```bash
-reprocheck assess examples/demo/paper.md --repo examples/demo/code --smoke
+paperrepro assess examples/demo/paper.md --repo examples/demo/code --smoke
 ```
 
 Expected verdict: **R2**, because the release has no missing checkpoint and no

@@ -4,7 +4,7 @@ import unittest
 from pathlib import Path
 
 import helpers
-from reprocheck.ingest.paper import IngestError, load_paper
+from paperrepro.ingest.paper import IngestError, load_paper
 
 
 class TestLatex(unittest.TestCase):

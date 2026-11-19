@@ -3,7 +3,7 @@
 import unittest
 
 import helpers  # noqa: F401  (puts src/ on sys.path)
-from reprocheck.textutil import (
+from paperrepro.textutil import (
     dataset_canonical,
     find_alias,
     is_number,

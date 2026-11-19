@@ -5,8 +5,8 @@ import unittest
 from pathlib import Path
 
 import helpers
-from reprocheck.execute.recipe import Recipe
-from reprocheck.execute.runner import classify_failure, execute_recipe
+from paperrepro.execute.recipe import Recipe
+from paperrepro.execute.runner import classify_failure, execute_recipe
 
 
 class TestClassification(unittest.TestCase):

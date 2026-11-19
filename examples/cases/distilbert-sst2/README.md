@@ -27,7 +27,7 @@ produced the number: [`result/eval.log`](result/eval.log).
 Reproduce it:
 
 ```bash
-reprocheck run https://ar5iv.labs.arxiv.org/html/1910.01108 \
+paperrepro run https://ar5iv.labs.arxiv.org/html/1910.01108 \
   --repo https://github.com/huggingface/transformers \
   --recipe examples/cases/distilbert-sst2/recipe.json \
   --out runs/distilbert-sst2
