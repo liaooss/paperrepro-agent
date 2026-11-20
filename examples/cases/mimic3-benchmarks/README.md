@@ -9,6 +9,7 @@ turning that into a verdict about the paper.
 | Release | [YerevaNN/mimic3-benchmarks](https://github.com/YerevaNN/mimic3-benchmarks) |
 | Attempt | modeleval on the in-hospital-mortality benchmark |
 | Outcome | **not verifiable on this machine**, for two independent reasons |
+| Recommendation | **cannot be assessed** — the report makes no claim about the paper |
 
 ## Two independent blocks
 

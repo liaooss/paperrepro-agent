@@ -4,6 +4,26 @@ All notable changes to this project are documented here. The format follows
 [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and the project adheres
 to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.7.0] - 2026-11-20
+
+The report now answers the question it exists for: is this paper usable as a
+baseline?
+
+### Added
+
+- `execute/recommendation.py` with four outcomes: `USE`,
+  `USE_WITH_CONDITIONS`, `DO_NOT_USE`, `CANNOT_ASSESS`.
+- Conditions attached to each outcome, naming the parameters that differ when
+  the audit found a mismatch.
+- A cost note: minutes per run and machine-hours for a multi-seed comparison.
+- The recommendation leads the report and the console summary.
+- 8 tests (177 total).
+
+### Changed
+
+- `BLOCKED` and `INSUFFICIENT_EVIDENCE` always map to `CANNOT_ASSESS`; the tool
+  no longer hints at a verdict it could not measure.
+
 ## [0.6.0] - 2026-11-20
 
 The consistency audit now covers preprocessing and metric definitions.

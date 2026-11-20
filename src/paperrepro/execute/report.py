@@ -48,9 +48,13 @@ def render_run_markdown(assessment: "RunAssessment") -> str:
     add(f"# Reproduction run — {assessment.name}")
     add("")
     status = getattr(assessment, "status", "") or "INSUFFICIENT_EVIDENCE"
+    recommendation = getattr(assessment, "recommendation", None)
     add(f"> **Status: {status}** — {STATUS_LABELS.get(status, '')}.  ")
     add(f"> {assessment.status_reason or ''}  ")
-    add(f"> Recommendation: **{viability.label}** · viability {viability.score:.1f}/5")
+    if recommendation is not None:
+        add(f"> **Recommendation: {recommendation.label}** — {recommendation.headline}")
+    else:
+        add(f"> Recommendation: **{viability.label}** · viability {viability.score:.1f}/5")
     add("")
     if outcomes:
         counts_text = ", ".join(f"{k}:{v}" for k, v in sorted(counts.items()))
@@ -220,6 +224,22 @@ def render_run_markdown(assessment: "RunAssessment") -> str:
         add("```")
         add("")
 
+    recommendation = getattr(assessment, "recommendation", None)
+    if recommendation is not None:
+        add("## Recommendation")
+        add("")
+        add(f"**{recommendation.label}.** {recommendation.headline}")
+        add("")
+        if recommendation.conditions:
+            add("Conditions:")
+            add("")
+            for condition in recommendation.conditions:
+                add(f"- {condition}")
+            add("")
+        if recommendation.cost_note:
+            add(f"Re-running: {recommendation.cost_note}.")
+            add("")
+
     add("## Viability")
     add("")
     add("| Dimension | Score | Note |")
@@ -261,4 +281,7 @@ def render_run_console(assessment: "RunAssessment") -> str:
     if audit:
         mismatched = [c for c in audit if c.status == "MISMATCH"]
         lines.append(f"audit     {len(audit)} parameter(s) checked, {len(mismatched)} mismatch(es)")
+    recommendation = getattr(assessment, "recommendation", None)
+    if recommendation is not None:
+        lines.append(f"advice    {recommendation.label}")
     return "\n".join(lines)

@@ -2,7 +2,7 @@
 
 > **Status: INSUFFICIENT_EVIDENCE** — insufficient evidence.  
 > the run failed before producing a measurement (ENV_CONFLICT)  
-> Recommendation: **do not use as a baseline yet** · viability 2.5/5
+> **Recommendation: cannot be assessed** — We could not obtain a measurement, so this report makes no claim about the paper's reproducibility.
 
 Claims compared: NOT_RUN:1 (tolerance 0.5 points).
 
@@ -24,7 +24,7 @@ None of the paper's stated parameters could be matched to a value in the code, s
 
 | | |
 |---|---|
-| Paper | `E:\Projects\new-project\.scratch\case-b3\paper\paper.html` |
+| Paper | `E:\Projects\new-project\.scratch\case-b-final\paper\paper.html` |
 | Repository | `.scratch\mimic3` |
 | Backend | local |
 | Commands | 1 (failed: 1) |
@@ -41,7 +41,7 @@ None of the paper's stated parameters could be matched to a value in the code, s
 Failure kinds map to different remedies:
 
 - `MISSING_WEIGHTS` / `DATA_UNAVAILABLE` — only the authors can fix this; ask them.
-- `ENV_CONFLICT` — try `--backend docker` or pin the versions the release expects.
+- `ENV_CONFLICT` — try `--backend docker`, or let the bounded repair drop a dead pin (it will say so in **Repair attempts**).
 - `OOM` — reduce batch size or resolution; the claim may still be checkable.
 - `TIMEOUT` — raise `--limit-minutes` or reduce the evaluation split.
 
@@ -59,6 +59,17 @@ plan: mimic3-benchmarks (source: curated)
   eval      : {python} -m mimic3benchmark.scripts.extract_subjects data/root/ data/root/
   notes     : The release pins tensorflow==1.15.0 and Keras==2.1.2 (Python 3.7 era) and its README states the MIMIC-III data must be acquired from PhysioNet by the reader. Either constraint alone is enough to stop a reproduction on a modern machine.
 ```
+
+## Recommendation
+
+**cannot be assessed.** We could not obtain a measurement, so this report makes no claim about the paper's reproducibility.
+
+Conditions:
+
+- unblock: ENV_CONFLICT: ERROR: No matching distribution found for tensorflow==1.15.0
+- unblock: no measured value to compare against the paper
+
+Re-running: about 0 min per run; a 3-seed comparison costs ~0.0 machine-hours, plus your own data preparation.
 
 ## Viability
 

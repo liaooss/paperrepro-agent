@@ -6,7 +6,7 @@ Last run: 2026-11-19, local Windows 11 / Python 3.14.8, and GitHub Actions
 ## Summary
 
 ```
-Ran 169 tests in ~55s
+Ran 177 tests in ~52s
 OK
 ```
 
@@ -34,6 +34,7 @@ need an interpreter create a throw-away virtualenv.
 | Planning | 4 | README command chosen, setup lines rejected, converter scripts rejected, metric from paper |
 | Consistency audit | 9 | match/mismatch with both sides, scientific notation, image size, macro vs micro F1, paper-only, code-only |
 | Reproduction status | 6 | five states and their boundaries |
+| Recommendation | 8 | four outcomes, conditions, cost scaling, no-claim rule |
 | Seeds | 6 | placeholder and flag forms, mean/std, a failed seed, all-failed |
 | Repair | 9 | unpin and mkdir strategies, restore, policy off, end-to-end loop |
 | Backends | 5 | selection, missing CLI, unreachable daemon, clean runner status |

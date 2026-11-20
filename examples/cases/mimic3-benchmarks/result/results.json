@@ -1,7 +1,7 @@
 {
   "schema": "paperrepro/run/v1",
   "name": "mimic3-benchmarks",
-  "paper": "E:\\Projects\\new-project\\.scratch\\case-b3\\paper\\paper.html",
+  "paper": "E:\\Projects\\new-project\\.scratch\\case-b-final\\paper\\paper.html",
   "repo": ".scratch\\mimic3",
   "recipe": {
     "name": "mimic3-benchmarks",
@@ -22,7 +22,9 @@
     "claim_ids": [],
     "env": {},
     "harness_dir": "",
-    "target": {}
+    "target": {},
+    "seeds": [],
+    "seed_flag": "--seed"
   },
   "plan": "plan: mimic3-benchmarks (source: curated)\n  install 1: {pip} install -r requirements.txt\n  eval      : {python} -m mimic3benchmark.scripts.extract_subjects data/root/ data/root/\n  notes     : The release pins tensorflow==1.15.0 and Keras==2.1.2 (Python 3.7 era) and its README states the MIMIC-III data must be acquired from PhysioNet by the reader. Either constraint alone is enough to stop a reproduction on a modern machine.",
   "status": "INSUFFICIENT_EVIDENCE",
@@ -34,17 +36,17 @@
     "failure": "ENV_CONFLICT",
     "failure_detail": "ERROR: No matching distribution found for tensorflow==1.15.0",
     "metrics": {},
-    "duration_s": 2.8,
+    "duration_s": 2.7,
     "disk_gb": 0.04,
-    "artifacts": "E:\\Projects\\new-project\\.scratch\\case-b3\\artifacts",
+    "artifacts": "E:\\Projects\\new-project\\.scratch\\case-b-final\\attempt-1\\artifacts",
     "workdir": "E:\\Projects\\new-project\\.scratch\\mimic3",
     "commands": [
       {
         "cmd": "\"E:\\Projects\\new-project\\.scratch\\mimic3\\.paperrepro-venv\\Scripts\\python.exe\" -m pip install -r requirements.txt",
         "exit_code": 1,
-        "duration_s": 2.83,
+        "duration_s": 2.75,
         "timed_out": false,
-        "log_path": "E:\\Projects\\new-project\\.scratch\\case-b3\\artifacts\\01-install.log"
+        "log_path": "E:\\Projects\\new-project\\.scratch\\case-b-final\\attempt-1\\artifacts\\01-install.log"
       }
     ]
   },
@@ -633,6 +635,19 @@
       "note": "the paper states it but no config value was found"
     }
   ],
+  "repairs": [],
+  "original_failure": "",
+  "seeds": null,
+  "recommendation": {
+    "verdict": "CANNOT_ASSESS",
+    "label": "cannot be assessed",
+    "headline": "We could not obtain a measurement, so this report makes no claim about the paper's reproducibility.",
+    "conditions": [
+      "unblock: ENV_CONFLICT: ERROR: No matching distribution found for tensorflow==1.15.0",
+      "unblock: no measured value to compare against the paper"
+    ],
+    "cost_note": "about 0 min per run; a 3-seed comparison costs ~0.0 machine-hours, plus your own data preparation"
+  },
   "outcomes": [
     {
       "claim_id": "C01",

@@ -1,7 +1,7 @@
 {
   "schema": "paperrepro/run/v1",
   "name": "distilbert-sst2",
-  "paper": "E:\\Projects\\new-project\\.scratch\\case-a\\out8\\paper\\paper.html",
+  "paper": "E:\\Projects\\new-project\\.scratch\\case-a\\final\\paper\\paper.html",
   "repo": ".scratch\\case-a\\out3\\repo",
   "recipe": {
     "name": "distilbert-sst2",
@@ -31,7 +31,9 @@
       "dataset": "sst2",
       "value": "91.3",
       "source": "arXiv:1910.01108, Table 2 (GLUE results), row DistilBERT, column SST-2"
-    }
+    },
+    "seeds": [],
+    "seed_flag": "--seed"
   },
   "plan": "plan: distilbert-sst2 (source: curated)\n  install 1: {pip} install torch --index-url https://download.pytorch.org/whl/cpu\n  install 2: {pip} install -e .\n  data    1: {python} {harness}/prepare_data.py --dest data\n  eval      : {python} {harness}/eval_sst2.py --data data --model distilbert-base-uncased-finetuned-sst-2-english\n  notes     : L2: released DistilBERT checkpoint, evaluated on the SST-2 dev split with the repository installed as a package. No training.",
   "status": "REPRODUCED",
@@ -45,9 +47,9 @@
     "metrics": {
       "accuracy": 0.9106
     },
-    "duration_s": 36.3,
+    "duration_s": 38.6,
     "disk_gb": 1.71,
-    "artifacts": "E:\\Projects\\new-project\\.scratch\\case-a\\out8\\artifacts",
+    "artifacts": "E:\\Projects\\new-project\\.scratch\\case-a\\final\\attempt-1\\artifacts",
     "workdir": "E:\\Projects\\new-project\\.scratch\\case-a\\out3\\repo",
     "commands": [
       {
@@ -55,28 +57,28 @@
         "exit_code": 0,
         "duration_s": 0.19,
         "timed_out": false,
-        "log_path": "E:\\Projects\\new-project\\.scratch\\case-a\\out8\\artifacts\\01-data.log"
+        "log_path": "E:\\Projects\\new-project\\.scratch\\case-a\\final\\attempt-1\\artifacts\\01-data.log"
       },
       {
         "cmd": "\"E:\\Projects\\new-project\\.scratch\\case-a\\out3\\repo\\.paperrepro-venv\\Scripts\\python.exe\" -m pip install torch --index-url https://download.pytorch.org/whl/cpu",
         "exit_code": 0,
-        "duration_s": 2.04,
+        "duration_s": 1.86,
         "timed_out": false,
-        "log_path": "E:\\Projects\\new-project\\.scratch\\case-a\\out8\\artifacts\\01-install.log"
+        "log_path": "E:\\Projects\\new-project\\.scratch\\case-a\\final\\attempt-1\\artifacts\\01-install.log"
       },
       {
         "cmd": "\"E:\\Projects\\new-project\\.scratch\\case-a\\out3\\repo\\.paperrepro-venv\\Scripts\\python.exe\" -m pip install -e .",
         "exit_code": 0,
-        "duration_s": 12.95,
+        "duration_s": 14.47,
         "timed_out": false,
-        "log_path": "E:\\Projects\\new-project\\.scratch\\case-a\\out8\\artifacts\\02-install.log"
+        "log_path": "E:\\Projects\\new-project\\.scratch\\case-a\\final\\attempt-1\\artifacts\\02-install.log"
       },
       {
         "cmd": "\"E:\\Projects\\new-project\\.scratch\\case-a\\out3\\repo\\.paperrepro-venv\\Scripts\\python.exe\" .paperrepro-harness/eval_sst2.py --data data --model distilbert-base-uncased-finetuned-sst-2-english",
         "exit_code": 0,
-        "duration_s": 21.14,
+        "duration_s": 22.05,
         "timed_out": false,
-        "log_path": "E:\\Projects\\new-project\\.scratch\\case-a\\out8\\artifacts\\99-eval.log"
+        "log_path": "E:\\Projects\\new-project\\.scratch\\case-a\\final\\attempt-1\\artifacts\\99-eval.log"
       }
     ]
   },
@@ -105,6 +107,19 @@
     }
   ],
   "audit": [],
+  "repairs": [],
+  "original_failure": "",
+  "seeds": null,
+  "recommendation": {
+    "verdict": "USE",
+    "label": "use as a baseline",
+    "headline": "The reported number reproduces within tolerance and the configuration is consistent.",
+    "conditions": [
+      "cite the measured value, not the paper's, when you compare against it",
+      "keep the recipe with your results so the comparison can be re-run"
+    ],
+    "cost_note": "about 1 min per run; a 3-seed comparison costs ~0.0 machine-hours, plus your own data preparation"
+  },
   "outcomes": [
     {
       "claim_id": "T01",

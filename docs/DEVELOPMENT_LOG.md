@@ -2,6 +2,32 @@
 
 Newest first. Each entry records what changed, what broke, and what is next.
 
+## 2026-11-20 - Phase 3: the recommendation, with conditions
+
+**Done**
+
+- `execute/recommendation.py`: four outcomes only - `USE`,
+  `USE_WITH_CONDITIONS`, `DO_NOT_USE`, `CANNOT_ASSESS` - each with the
+  conditions attached and a cost note ("about N min per run; a 3-seed comparison
+  costs ~X machine-hours").
+- `CANNOT_ASSESS` is the default for `BLOCKED` and `INSUFFICIENT_EVIDENCE`: the
+  tool makes no claim about a paper it could not measure.
+- A reproduced number with a configuration mismatch in the audit becomes
+  `USE_WITH_CONDITIONS`, naming the mismatched parameters rather than silently
+  recommending the paper.
+- The recommendation leads the report and appears in the console summary.
+- 8 new tests (177 total).
+
+**Evidence refreshed**
+
+- DistilBERT/SST-2 -> "use as a baseline", 0.6 min per run.
+- MIMIC-III -> "cannot be assessed", with the unblock condition quoted.
+
+**Next**
+
+- Dataset splits and normalisation constants in the audit.
+- Docker still blocked on WSL2.
+
 ## 2026-11-20 - Phase 3: the audit learns preprocessing and metric definitions
 
 **Done**

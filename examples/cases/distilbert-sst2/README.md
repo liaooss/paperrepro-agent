@@ -9,6 +9,7 @@ The first executed case, kept in the repository as the reference for what a
 | Claim | Table 2, GLUE results, DistilBERT, SST-2: **91.3** |
 | Release | [huggingface/transformers](https://github.com/huggingface/transformers) |
 | Level | L2 — released weights, no training |
+| Recommendation | **use as a baseline** (conditions: cite the measured value, keep the recipe) |
 
 ## Result
 

@@ -20,6 +20,7 @@ from ..risk import run_rules
 from ..textutil import metric_canonical
 from .compare import ClaimOutcome, compare_claims, summarise_outcomes
 from .recipe import Recipe, load_recipe
+from .recommendation import Recommendation, recommend
 from .repair import MAX_ATTEMPTS, RepairPolicy, run_with_repair
 from .report import render_run_markdown
 from .runner import RunResult, execute_recipe
@@ -45,6 +46,7 @@ class RunAssessment:
     repairs: list = field(default_factory=list)
     original_failure: str = ""
     seed_summary: SeedSummary | None = None
+    recommendation: Recommendation | None = None
     status: str = "INSUFFICIENT_EVIDENCE"
     status_reason: str = ""
     plan: str = ""
@@ -66,6 +68,7 @@ class RunAssessment:
             "repairs": [r.to_dict() for r in self.repairs],
             "original_failure": self.original_failure,
             "seeds": self.seed_summary.to_dict() if self.seed_summary else None,
+            "recommendation": self.recommendation.to_dict() if self.recommendation else None,
             "outcomes": [o.to_dict() for o in self.outcomes],
             "outcome_summary": summarise_outcomes(self.outcomes),
             "viability": self.viability.to_dict(),
@@ -295,6 +298,13 @@ def run_case(
             f"after {len(repairs)} repair attempt(s) on {original.failure if original else 'a failure'}: "
         )
         status_reason = prefix + status_reason
+    recommendation = recommend(
+        status,
+        viability,
+        audit,
+        seeds=len(recipe.seeds) or 3,
+        duration_s=run.duration_s,
+    )
 
     assessment = RunAssessment(
         name=recipe.name,
@@ -310,6 +320,7 @@ def run_case(
         repairs=repairs,
         original_failure=(original.failure if original else ""),
         seed_summary=seed_summary,
+        recommendation=recommendation,
         status=status,
         status_reason=status_reason,
         plan=plan,

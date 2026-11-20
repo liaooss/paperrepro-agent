@@ -44,8 +44,10 @@ committed with artifacts. One of the two must run from an inferred plan.
 - **Done (first slice):** consistency audit covers cropping/resize size and
   metric averaging (macro vs micro F1). **Next:** dataset splits and
   normalisation constants.
-- **Next:** viability report with the "is this a defensible baseline"
-  recommendation and the cost of keeping it in a comparison table.
+- **Done:** the report ends with an explicit recommendation - `USE`,
+  `USE_WITH_CONDITIONS`, `DO_NOT_USE` or `CANNOT_ASSESS` - plus the conditions
+  attached to it and the machine-hours of keeping the baseline in a comparison
+  table.
 
 ## Phase 4 - surfaces
 
