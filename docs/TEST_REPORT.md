@@ -6,7 +6,7 @@ Last run: 2026-11-19, local Windows 11 / Python 3.14.8, and GitHub Actions
 ## Summary
 
 ```
-Ran 165 tests in ~55s
+Ran 169 tests in ~55s
 OK
 ```
 
@@ -32,7 +32,7 @@ need an interpreter create a throw-away virtualenv.
 | Comparison | 9 | fraction/point normalisation, MATCH/CLOSE/MISMATCH/NOT_RUN, alias metrics |
 | Viability | 6 | dimension completeness, penalties, missing-asset verdict |
 | Planning | 4 | README command chosen, setup lines rejected, converter scripts rejected, metric from paper |
-| Consistency audit | 5 | match, mismatch with both sides, scientific notation, paper-only, code-only |
+| Consistency audit | 9 | match/mismatch with both sides, scientific notation, image size, macro vs micro F1, paper-only, code-only |
 | Reproduction status | 6 | five states and their boundaries |
 | Seeds | 6 | placeholder and flag forms, mean/std, a failed seed, all-failed |
 | Repair | 9 | unpin and mkdir strategies, restore, policy off, end-to-end loop |

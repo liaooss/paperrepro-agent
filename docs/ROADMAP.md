@@ -41,8 +41,9 @@ committed with artifacts. One of the two must run from an inferred plan.
 - **Done:** multi-seed execution. `recipe.seeds` repeats the evaluation and
   the report shows mean, standard deviation, per-seed values, and whether the
   spread is small relative to the tolerance.
-- **Next:** consistency audit extended to dataset splits, preprocessing and
-  metric definitions.
+- **Done (first slice):** consistency audit covers cropping/resize size and
+  metric averaging (macro vs micro F1). **Next:** dataset splits and
+  normalisation constants.
 - **Next:** viability report with the "is this a defensible baseline"
   recommendation and the cost of keeping it in a comparison table.
 

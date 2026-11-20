@@ -112,6 +112,18 @@ adapter.
 - **New domain adapter** - only needed once a second vertical is added; the
   current plan/execute cycle is domain-agnostic.
 
+## Consistency audit families
+
+| Parameter | Kind | Why it is worth comparing |
+|---|---|---|
+| learning_rate, batch_size, epochs, weight_decay, dropout | number | the usual suspects, compared with a 1% relative tolerance |
+| optimizer | name | Adam vs AdamW changes the result |
+| image_size | number | "we resize to 224" vs `image_size: 256` is a silent mismatch |
+| f1_average | enum | macro-F1 and micro-F1 are different numbers with the same name |
+
+The code side only reads configuration files and config-like modules; values
+outside a plausible range are discarded rather than reported.
+
 ## Repair policy
 
 A run may be repaired twice, and only in these ways:

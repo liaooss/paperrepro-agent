@@ -4,4 +4,4 @@ Kept in its own module so that internal modules can import it without creating a
 circular import through the package ``__init__``.
 """
 
-__version__ = "0.5.0"
+__version__ = "0.6.0"

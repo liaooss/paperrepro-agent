@@ -4,6 +4,17 @@ All notable changes to this project are documented here. The format follows
 [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and the project adheres
 to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.6.0] - 2026-11-20
+
+The consistency audit now covers preprocessing and metric definitions.
+
+### Added
+
+- `image_size`: compares the crop/resize the paper states with the config value.
+- `f1_average`: compares macro / micro / weighted / binary averaging.
+- Enum comparison normalises spelling variants before declaring a mismatch.
+- 4 tests (169 total).
+
 ## [0.5.0] - 2026-11-20
 
 Multi-seed runs: a reported number becomes a distribution.

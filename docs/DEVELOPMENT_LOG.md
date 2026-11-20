@@ -2,6 +2,28 @@
 
 Newest first. Each entry records what changed, what broke, and what is next.
 
+## 2026-11-20 - Phase 3: the audit learns preprocessing and metric definitions
+
+**Done**
+
+- Two new auditable families: `image_size` (crop/resize) and `f1_average`
+  (macro / micro / weighted / binary). Both are quoted from the paper and the
+  config with their locations.
+- Enum comparison normalises spelling (`val`/`validation`, `train`/`training`)
+  so a wording difference is not reported as a discrepancy.
+- 4 new tests (169 total), including macro-in-paper versus micro-in-code.
+
+**Why these two**
+
+They are the two mismatches that produce a different number while every
+hyperparameter looks identical: a 224 vs 256 crop, and macro vs micro F1. Both
+are stated in prose, which is exactly where the extractor previously stopped.
+
+**Next**
+
+- Dataset splits and normalisation constants.
+- Docker still blocked on WSL2 (fourth round).
+
 ## 2026-11-20 - Phase 3: multi-seed runs and spread
 
 **Done**

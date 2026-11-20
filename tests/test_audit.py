@@ -17,6 +17,14 @@ for 100 epochs.
 
 
 class TestAudit(unittest.TestCase):
+    def _audit_with(self, paper_text, config_text):
+        repo = helpers.make_repo({"configs/train.yaml": config_text})
+        paper = load_paper(helpers._write_paper(paper_text))
+        try:
+            return {c.param: c for c in audit_parameters(paper, scan_repo(repo))}
+        finally:
+            helpers.cleanup(repo)
+
     def _audit(self, config_text):
         repo = helpers.make_repo({"configs/train.yaml": config_text})
         paper = load_paper(helpers._write_paper(PAPER))
@@ -57,6 +65,29 @@ We use a learning rate of 1e-3.
     def test_paper_only_parameter(self):
         checks = self._audit("batch_size: 64\n")
         self.assertEqual(checks["learning_rate"].status, "PAPER_ONLY")
+
+    def test_image_size_match(self):
+        paper = "# P\n\n## Method\n\nAll images are resized to 224 before training.\n"
+        checks = self._audit_with(paper, "image_size: 224\n")
+        self.assertEqual(checks["image_size"].status, "MATCH")
+
+    def test_image_size_mismatch(self):
+        paper = "# P\n\n## Method\n\nAll images are resized to 224 before training.\n"
+        checks = self._audit_with(paper, "image_size: 256\n")
+        self.assertEqual(checks["image_size"].status, "MISMATCH")
+        self.assertEqual(checks["image_size"].paper_value, "224")
+        self.assertEqual(checks["image_size"].code_value, "256")
+
+    def test_macro_versus_micro_f1(self):
+        paper = "# P\n\n## Experiments\n\nWe report macro-F1 over all classes.\n"
+        checks = self._audit_with(paper, "average: micro\n")
+        self.assertEqual(checks["f1_average"].status, "MISMATCH")
+        self.assertIn("macro", checks["f1_average"].note)
+
+    def test_weighted_and_macro_both_report_f1(self):
+        paper = "# P\n\n## Experiments\n\nWe report macro F1 over all classes.\n"
+        checks = self._audit_with(paper, "average: macro\n")
+        self.assertEqual(checks["f1_average"].status, "MATCH")
 
     def test_code_only_parameter(self):
         paper = """# P

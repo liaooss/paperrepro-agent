@@ -57,6 +57,22 @@ _PLAUSIBLE: dict[str, tuple[float, float]] = {
     "epochs": (1.0, 100000.0),
     "weight_decay": (0.0, 1.0),
     "dropout": (0.0, 1.0),
+    "image_size": (16.0, 4096.0),
+}
+
+# Spelling variants that mean the same thing; compared after normalisation.
+_EQUIVALENT = {
+    "validation": "validation",
+    "val": "validation",
+    "valid": "validation",
+    "training": "train",
+    "train": "train",
+    "test": "test",
+    "macro": "macro",
+    "micro": "micro",
+    "weighted": "weighted",
+    "binary": "binary",
+    "samples": "samples",
 }
 
 # name -> (paper pattern, code pattern, kind)
@@ -90,6 +106,21 @@ AUDITABLE: dict[str, tuple[str, str, str]] = {
         r"\b(AdamW|Adam|SGD|RMSprop|Adagrad|LAMB)\b",
         r"optimizer\s*[:=]\s*['\"]?(\w+)",
         "name",
+    ),
+    # Preprocessing: a 224 vs 256 crop is a silent source of "why is my number
+    # different", and it is stated explicitly often enough to be worth checking.
+    "image_size": (
+        r"(?:resiz\w*\s+(?:to|at)|resolution\s+of|input\s+size\s+of|crop\s+size\s+of|"
+        r"images?\s+(?:are|were)\s+(?:resized|cropped)\s+to)\s*(\d{2,4})",
+        r"(?:image_size|img_size|input_size|resize|resolution)\s*[:=(]\s*\(?\s*['\"]?\s*(\d{2,4})",
+        "number",
+    ),
+    # Metric definition: macro-F1 and micro-F1 are different numbers with the
+    # same name, and reviewers do ask which one was used.
+    "f1_average": (
+        r"\b(macro|micro|weighted)[-\s]?(?:averaged?\s*)?f1\b",
+        r"(?:average|averaging)\s*[:=]\s*['\"]?(macro|micro|weighted|binary)",
+        "enum",
     ),
 }
 
@@ -171,6 +202,11 @@ def _same_number(a: str, b: str) -> bool:
     return abs(left - right) / scale <= 0.01
 
 
+def _normalise_enum(value: str) -> str:
+    key = value.strip().lower()
+    return _EQUIVALENT.get(key, key)
+
+
 def audit_parameters(doc: PaperDoc, scan: RepoScan) -> list[ParamCheck]:
     """Compare every auditable hyperparameter the paper states with the code."""
     paper = _paper_hits(doc)
@@ -190,6 +226,10 @@ def audit_parameters(doc: PaperDoc, scan: RepoScan) -> list[ParamCheck]:
         elif kind == "number":
             status = "MATCH" if _same_number(p_val, c_val) else "MISMATCH"
             note = "" if status == "MATCH" else "the paper and the code disagree"
+        elif kind == "enum":
+            same = _normalise_enum(p_val) == _normalise_enum(c_val)
+            status = "MATCH" if same else "MISMATCH"
+            note = "" if same else f"the paper says {p_val}, the code configures {c_val}"
         else:
             status = "MATCH" if p_val.strip().lower() == c_val.strip().lower() else "MISMATCH"
             note = "" if status == "MATCH" else "different optimiser family"
