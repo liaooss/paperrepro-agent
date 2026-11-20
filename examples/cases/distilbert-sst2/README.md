@@ -63,6 +63,19 @@ The report prints that provenance next to the delta. Automatic extraction of
 dataset-in-column tables is still on the roadmap; until then the honest fallback
 is a declared target, not a guessed one.
 
+## Repeatability across seeds
+
+`recipe-seeds.json` repeats the same evaluation under three seeds:
+
+| Metric | Mean | Std | Runs | Per-seed |
+|---|---|---|---|---|
+| accuracy | 0.9106 | 0.0000 | 3/3 | 1:0.9106, 2:0.9106, 3:0.9106 |
+
+A zero spread is the correct answer for a deterministic evaluation, and it is
+informative: the -0.24 point delta cannot be sampling noise, so it must come from
+the protocol (tokenisation, max length, label mapping) or from the checkpoint
+itself. Evidence: [`result/multiseed_report.md`](result/multiseed_report.md).
+
 ## What this case does and does not prove
 
 - It proves the loop closes: acquire → isolate → run → parse → compare → score,

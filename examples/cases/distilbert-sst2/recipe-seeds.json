@@ -1,0 +1,28 @@
+{
+  "name": "distilbert-sst2-seeds",
+  "source": "curated",
+  "python": "3.14",
+  "install": [
+    "{pip} install torch --index-url https://download.pytorch.org/whl/cpu",
+    "{pip} install -e ."
+  ],
+  "data": ["{python} {harness}/prepare_data.py --dest data"],
+  "eval_cmd": "{python} {harness}/eval_sst2.py --data data --model distilbert-base-uncased-finetuned-sst-2-english --seed {seed}",
+  "metric": "accuracy",
+  "metric_regex": "accuracy:\\s*(?P<value>\\d+\\.\\d+)",
+  "tolerance_abs": 0.5,
+  "tolerance_rel": 0.01,
+  "timeout_minutes": 40,
+  "budget_gb": 5.0,
+  "harness_dir": ".",
+  "seeds": [1, 2, 3],
+  "seed_flag": "--seed",
+  "target": {
+    "metric": "accuracy",
+    "raw_metric": "SST-2 accuracy (GLUE dev)",
+    "dataset": "sst2",
+    "value": "91.3",
+    "source": "arXiv:1910.01108, Table 2 (GLUE results), row DistilBERT, column SST-2"
+  },
+  "notes": "L2 evaluation with released weights, repeated under three seeds to measure spread. The evaluation is deterministic, so a zero spread is the expected answer here - and it means the delta is protocol, not sampling noise."
+}

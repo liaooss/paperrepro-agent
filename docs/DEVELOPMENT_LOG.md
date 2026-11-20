@@ -2,6 +2,34 @@
 
 Newest first. Each entry records what changed, what broke, and what is next.
 
+## 2026-11-20 - Phase 3: multi-seed runs and spread
+
+**Done**
+
+- `execute/seeds.py`: a recipe with `seeds: [1, 2, 3]` repeats the evaluation
+  (the seed goes into `{seed}` or is appended via `seed_flag`), aggregates mean
+  and population standard deviation, and keeps every seed's artifacts under
+  `seed-<n>/`.
+- The report gains **Stability across seeds**: mean, std, runs, per-seed values,
+  plus a sentence on whether the spread is small relative to the tolerance.
+- On DistilBERT/SST-2 with seeds 1-3 the spread is 0.0000, which is the honest
+  answer for a deterministic evaluation: the -0.24 delta is protocol, not
+  sampling noise. Archived as `result/multiseed_report.md`.
+- 6 new tests (165 total), including a failing seed that must not poison the
+  others.
+
+**Decisions**
+
+- Multi-seed runs bypass the repair loop: a repaired environment that differs
+  between seeds would make the spread meaningless.
+- A single failed seed is kept in the denominator of `ok/total` but excluded from
+  the mean; the report shows both numbers rather than hiding the loss.
+
+**Next**
+
+- Consistency audit for splits, preprocessing and metric definitions.
+- Docker remains blocked on WSL2.
+
 ## 2026-11-20 - Phase 2: bounded repair and config-driven plans
 
 **Done**

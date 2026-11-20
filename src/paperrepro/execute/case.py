@@ -23,6 +23,7 @@ from .recipe import Recipe, load_recipe
 from .repair import MAX_ATTEMPTS, RepairPolicy, run_with_repair
 from .report import render_run_markdown
 from .runner import RunResult, execute_recipe
+from .seeds import SeedSummary, run_seeds
 from .status import reproduction_status
 from .viability import Viability, assess_viability
 
@@ -43,6 +44,7 @@ class RunAssessment:
     audit: list = field(default_factory=list)
     repairs: list = field(default_factory=list)
     original_failure: str = ""
+    seed_summary: SeedSummary | None = None
     status: str = "INSUFFICIENT_EVIDENCE"
     status_reason: str = ""
     plan: str = ""
@@ -63,6 +65,7 @@ class RunAssessment:
             "audit": [c.to_dict() for c in self.audit],
             "repairs": [r.to_dict() for r in self.repairs],
             "original_failure": self.original_failure,
+            "seeds": self.seed_summary.to_dict() if self.seed_summary else None,
             "outcomes": [o.to_dict() for o in self.outcomes],
             "outcome_summary": summarise_outcomes(self.outcomes),
             "viability": self.viability.to_dict(),
@@ -256,15 +259,30 @@ def run_case(
     claims = _with_target(claims, recipe)
     recipe = _prepare_harness(recipe, repo_path)
 
-    run, repairs, original = run_with_repair(
-        recipe,
-        workdir=repo_path,
-        out_dir=out,
-        backend_name=backend,
-        limit_minutes=limit_minutes,
-        gpu=gpu,
-        policy=RepairPolicy(enabled=repair, max_attempts=max_repairs),
-    )
+    seed_summary: SeedSummary | None = None
+    if recipe.seeds:
+        # Multi-seed runs bypass repair on purpose: a repaired environment would
+        # differ between seeds, and the spread would stop meaning anything.
+        run, seed_summary = run_seeds(
+            recipe,
+            workdir=repo_path,
+            out_dir=out,
+            seeds=recipe.seeds,
+            backend_name=backend,
+            limit_minutes=limit_minutes,
+            gpu=gpu,
+        )
+        repairs, original = [], None
+    else:
+        run, repairs, original = run_with_repair(
+            recipe,
+            workdir=repo_path,
+            out_dir=out,
+            backend_name=backend,
+            limit_minutes=limit_minutes,
+            gpu=gpu,
+            policy=RepairPolicy(enabled=repair, max_attempts=max_repairs),
+        )
     outcomes = compare_claims(
         claims, run.metrics, tolerance_abs=recipe.tolerance_abs, tolerance_rel=recipe.tolerance_rel
     )
@@ -291,6 +309,7 @@ def run_case(
         audit=audit,
         repairs=repairs,
         original_failure=(original.failure if original else ""),
+        seed_summary=seed_summary,
         status=status,
         status_reason=status_reason,
         plan=plan,

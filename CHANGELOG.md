@@ -4,6 +4,24 @@ All notable changes to this project are documented here. The format follows
 [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and the project adheres
 to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.5.0] - 2026-11-20
+
+Multi-seed runs: a reported number becomes a distribution.
+
+### Added
+
+- `recipe.seeds` / `recipe.seed_flag`: repeat the evaluation per seed, with each
+  seed's artifacts under `seed-<n>/`.
+- Mean and population standard deviation per metric, plus a **Stability across
+  seeds** section that says whether the spread is small relative to the
+  tolerance.
+- 6 tests (165 total), including a failing seed that leaves the others intact.
+
+### Notes
+
+- Multi-seed runs deliberately skip the repair loop, so a repaired environment
+  cannot differ between seeds.
+
 ## [0.4.0] - 2026-11-20
 
 Phase 2: the engine repairs what is safe to repair, and plans differently for

@@ -31,6 +31,12 @@ def main() -> int:
     parser.add_argument("--model", default="distilbert-base-uncased-finetuned-sst-2-english")
     parser.add_argument("--batch-size", type=int, default=64)
     parser.add_argument("--limit", type=int, default=0, help="evaluate only the first N rows")
+    parser.add_argument(
+        "--seed",
+        type=int,
+        default=42,
+        help="seed the runtime; the evaluation itself is deterministic",
+    )
     args = parser.parse_args()
 
     import torch
@@ -46,6 +52,7 @@ def main() -> int:
         rows = rows[: args.limit]
     print(f"device: cpu | model: {args.model} | examples: {len(rows)}")
 
+    torch.manual_seed(args.seed)
     torch.set_num_threads(min(8, torch.get_num_threads()))
     tokenizer = AutoTokenizer.from_pretrained(args.model)
     model = AutoModelForSequenceClassification.from_pretrained(args.model)

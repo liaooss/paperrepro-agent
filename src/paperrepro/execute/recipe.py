@@ -55,6 +55,9 @@ class Recipe:
     # The value being checked, when the paper's table cannot be parsed
     # automatically. Always carries the paper location it came from.
     target: dict[str, Any] = field(default_factory=dict)
+    # Repeat the evaluation across seeds. Empty means a single run.
+    seeds: list[int] = field(default_factory=list)
+    seed_flag: str = "--seed"
 
     def to_dict(self) -> dict[str, Any]:
         return asdict(self)
@@ -92,6 +95,8 @@ class Recipe:
             env={str(k): str(v) for k, v in (data.get("env") or {}).items()},
             harness_dir=str(data.get("harness_dir") or ""),
             target=dict(data.get("target") or {}),
+            seeds=[int(s) for s in (data.get("seeds") or [])],
+            seed_flag=str(data.get("seed_flag") or "--seed"),
         )
 
 

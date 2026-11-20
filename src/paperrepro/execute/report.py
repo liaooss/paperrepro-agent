@@ -71,6 +71,33 @@ def render_run_markdown(assessment: "RunAssessment") -> str:
             )
         add("")
 
+    seed_summary = getattr(assessment, "seed_summary", None)
+    if seed_summary and seed_summary.mean:
+        add("## Stability across seeds")
+        add("")
+        add("| Metric | Mean | Std | Runs | Per-seed |")
+        add("|--------|------|-----|------|----------|")
+        for name, mean in sorted(seed_summary.mean.items()):
+            std = seed_summary.std.get(name, 0.0)
+            values = ", ".join(
+                f"{seed}:{metrics.get(name, 0):.4f}"
+                for seed, metrics in sorted(seed_summary.per_seed.items())
+                if name in metrics
+            )
+            add(f"| {_cell(name)} | {mean:.4f} | {std:.4f} | {seed_summary.ok}/{seed_summary.total} | {values} |")
+        add("")
+        widest = max(seed_summary.std.values()) if seed_summary.std else 0.0
+        if widest > assessment.recipe.tolerance_abs / 2:
+            add(
+                "The spread is wider than half the tolerance, so a single run could plausibly land "
+                "on the other side of the threshold: treat the delta as a distribution, not a number."
+            )
+        else:
+            add(
+                "The spread is small relative to the tolerance, so the comparison is stable across seeds."
+            )
+        add("")
+
     audit = getattr(assessment, "audit", []) or []
     if audit:
         add("## Consistency audit — paper versus code")

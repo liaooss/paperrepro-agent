@@ -38,11 +38,13 @@ committed with artifacts. One of the two must run from an inferred plan.
 
 ## Phase 3 - evaluation system
 
-- Multi-seed execution (>=3 seeds) with variance reported next to the delta.
-- Consistency audit extended to dataset splits, preprocessing and metric
-  definitions.
-- Viability report with the "is this a defensible baseline" recommendation and
-  the cost of keeping it in a comparison table.
+- **Done:** multi-seed execution. `recipe.seeds` repeats the evaluation and
+  the report shows mean, standard deviation, per-seed values, and whether the
+  spread is small relative to the tolerance.
+- **Next:** consistency audit extended to dataset splits, preprocessing and
+  metric definitions.
+- **Next:** viability report with the "is this a defensible baseline"
+  recommendation and the cost of keeping it in a comparison table.
 
 ## Phase 4 - surfaces
 
