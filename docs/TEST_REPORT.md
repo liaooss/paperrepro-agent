@@ -39,7 +39,8 @@ need an interpreter create a throw-away virtualenv.
 
 | Gap | Why | Consequence |
 |---|---|---|
-| Docker backend | daemon not available in CI | backend is implemented but only exercised by hand |
+| Docker success path | no daemon in CI and no WSL2 on the dev machine | implemented, unexecuted |
+| Docker failure path | covered | `tests/test_backends.py` pins the actionable message for a missing CLI, an unreachable daemon, and `status=error / BACKEND_UNAVAILABLE` from the runner |
 | GPU execution | no GPU in CI | CUDA code paths untested |
 | Real-network acquisition | CI is offline by design | tarball fallback tested only manually |
 | LLM enrichment | needs a key | client tested for degradation and JSON robustness only |

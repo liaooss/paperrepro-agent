@@ -25,6 +25,11 @@ Newest first. Each entry records what changed, what broke, and what is next.
 - The first version of `mkdir` created the *file path* as a directory
   (`results/out.txt/`), so the retry failed again. It now creates the parent
   when the missing path carries a suffix.
+- `execute_recipe` only caught `BackendError` when *selecting* a backend; a
+  backend that failed during `prepare()` (no daemon, no interpreter) escaped as
+  a traceback. It now returns `status=error / BACKEND_UNAVAILABLE` with the
+  actionable message, which is also how `--backend docker` behaves on a machine
+  without WSL2.
 - `restore` resolved the backup relative to the wrong root and left
   `requirements.txt` modified in the checkout. Caught by checking
   `git status` in the cloned repository after a repair run, which is now part of

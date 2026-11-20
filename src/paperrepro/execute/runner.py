@@ -180,6 +180,16 @@ def execute_recipe(
                     break
             else:
                 r = step(recipe.eval_cmd, "99-eval", env=recipe.env or None)
+    except BackendError as exc:
+        # Preparation can fail after construction (no daemon, no interpreter).
+        # That is a status, not a traceback.
+        result.status = "error"
+        result.failure = "BACKEND_UNAVAILABLE"
+        result.failure_detail = str(exc)
+        result.duration_s = time.time() - started
+        (out / "run.json").write_text(json.dumps(result.to_dict(), indent=2), encoding="utf-8")
+        _write_commands(out, result.commands)
+        return result
     finally:
         backend.close()
 
