@@ -65,6 +65,25 @@ environment cannot be built at all.
 Both are outside what a reproduction tool can obtain on its own. Recording that
 precisely is the deliverable.
 
+## What the bounded repair did
+
+Running the same recipe without `--no-repair` lets the engine try to fix the
+install on its own:
+
+| # | Failure | Strategy | Change | Result |
+|---|---|---|---|---|
+| 1 | `ENV_CONFLICT` | unpin | `tensorflow==1.15.0` -> `tensorflow` | did not help |
+
+The second attempt installed, then failed again at import time, because the
+release's code is written for Keras 2.1.2. The repair is reported as "did not
+help", the checkout was restored afterwards, and the status stayed
+`INSUFFICIENT_EVIDENCE`. Evidence: [`result/repair_report.md`](result/repair_report.md)
+and [`result/unpin-tensorflow.diff`](result/unpin-tensorflow.diff).
+
+This is the useful case for the repair feature: an environment failure it *can*
+fix moves the run one step forward, and the remaining blocker is the one that was
+never repairable - the data.
+
 ## What is still unexercised
 
 The `BLOCKED` status (missing checkpoints, data unavailable *at runtime*) is

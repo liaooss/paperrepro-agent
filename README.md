@@ -39,7 +39,9 @@ R0–R3. Seconds, zero dependencies, works on a laptop.
 
 **Execution** (`paperrepro run`) answers *did it actually reproduce*: isolated
 environment, real commands, parsed metrics, comparison against the paper,
-five-state status, consistency audit, viability score.
+five-state status, consistency audit, viability score. When the environment
+fails for a mundane reason - a pin whose wheel no longer exists, a directory the
+script expects - it makes one bounded, recorded repair attempt (patch kept, checkout restored) and reports both runs.
 
 ## Quickstart
 

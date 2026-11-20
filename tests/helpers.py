@@ -9,6 +9,7 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 SRC = ROOT / "src"
+IS_WINDOWS = sys.platform.startswith("win")
 DEMO_PAPER = ROOT / "examples" / "demo" / "paper.md"
 DEMO_REPO = ROOT / "examples" / "demo" / "code"
 TEX_PAPER = Path(__file__).resolve().parent / "fixtures" / "sample.tex"

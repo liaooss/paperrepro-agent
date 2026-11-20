@@ -4,6 +4,28 @@ All notable changes to this project are documented here. The format follows
 [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and the project adheres
 to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.4.0] - 2026-11-20
+
+Phase 2: the engine repairs what is safe to repair, and plans differently for
+config-driven repositories.
+
+### Added
+
+- Bounded repair loop (`--no-repair` to disable): drops a dead `pkg==version`
+  pin, or creates a missing directory inside the checkout. Two attempts maximum.
+- Each repair keeps a `.diff` patch and a backup under `repairs/`, runs in its
+  own `attempt-N/` directory, and restores the checkout afterwards.
+- Report section **Repair attempts**, and the numbers are labelled as coming
+  from the repaired attempt.
+- Config-driven plan inference: an entry point taking `--config` is paired with
+  the config the release ships, and beats the bare script candidate.
+
+### Fixed
+
+- `mkdir` repair created the missing *file* as a directory; it now creates the
+  parent when the path has a suffix.
+- Repair left the checkout modified; `restore` now reverts the patched files.
+
 ## [0.3.1] - 2026-11-19
 
 The second case: a release that cannot be verified, and a report that says so
@@ -14,7 +36,8 @@ without turning it into a verdict about the paper.
 - examples/cases/mimic3-benchmarks/ - MIMIC-III benchmarks, static verdict R1
   (credential-gated data) and executed status INSUFFICIENT_EVIDENCE
   (ENV_CONFLICT, 	ensorflow==1.15.0 unavailable on the current interpreter).
-- paperrepro assess accepts paper URLs, matching un.
+- paperrepro assess accepts paper URLs, matching 
+un.
 
 ### Fixed
 

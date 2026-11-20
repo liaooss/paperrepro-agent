@@ -1,0 +1,4 @@
+--- a/requirements.txt
++++ b/requirements.txt
+-tensorflow==1.15.0
++tensorflow

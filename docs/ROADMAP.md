@@ -25,12 +25,16 @@ committed with artifacts. One of the two must run from an inferred plan.
 
 ## Phase 2 - autonomous planning and repair
 
-- Plan inference for repositories without a README command (config-driven
-  entry points, `argparse` defaults, `hydra`/`omegaconf` configs).
-- Bounded repair loop: environment, path and API-rename failures only; each
-  attempt logged, each source edit kept as a patch beside the run.
-- A repaired attempt is a separate run with its own status; the report shows
-  both, so a repaired run can never masquerade as the original.
+- **Done:** config-driven plan inference - an entry point that takes
+  `--config` is paired with the config the release ships, and beats the bare
+  `run.py` candidate.
+- **Done:** bounded repair for `ENV_CONFLICT` dead pins and missing directories;
+  each attempt is a separate run, each edit kept as a patch and a backup, and
+  the checkout is restored afterwards.
+- **Done:** the report labels repaired numbers as coming from the repaired
+  attempt, never as the original.
+- **Next:** API-rename repair (`cannot import name X from Y`), which needs a
+  symbol map and is not safe to guess yet.
 
 ## Phase 3 - evaluation system
 

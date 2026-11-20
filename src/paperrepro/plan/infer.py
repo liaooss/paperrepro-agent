@@ -91,6 +91,32 @@ def _module_exists(module: str, scan: RepoScan) -> bool:
     return any(f.path in wanted for f in scan.files)
 
 
+def _config_driven(scan: RepoScan) -> list[tuple[str, str, str]]:
+    """Entry points that take `--config`, paired with the config they expect.
+
+    Many research repositories ship no README command but do ship a config
+    directory; the training script is then `run.py --config configs/x.yaml`.
+    """
+    configs = [f.path for f in scan.files if f.lang == "config" and f.path.endswith((".yaml", ".yml"))]
+    if not configs:
+        return []
+    preferred = [c for c in configs if "/config" in c.lower() or c.lower().startswith("config")]
+    chosen = (preferred or configs)[0]
+
+    found: list[tuple[str, str, str]] = []
+    for f in scan.files:
+        if f.lang != "python" or not f.text:
+            continue
+        text = f.text
+        if "--config" not in text or "add_argument" not in text:
+            continue
+        stem = Path(f.path).stem.lower()
+        if stem not in _EVAL_STEMS + _RUN_STEMS + _TRAIN_STEMS:
+            continue
+        found.append((f"{{python}} {f.path} --config {chosen}", f.path, "config-driven"))
+    return found
+
+
 def _candidate_commands(scan: RepoScan) -> list[tuple[str, str, str]]:
     """(command, referenced target, source) candidates, best first.
 
@@ -121,11 +147,20 @@ def _candidate_commands(scan: RepoScan) -> list[tuple[str, str, str]]:
             continue
         found.append((f"{{python}} {path}", path, "entry point"))
 
+    # A `run.py --config configs/x.yaml` beats a bare `run.py`: it is the
+    # command the release actually expects.
+    config_driven = _config_driven(scan)
+    configured = {item[1] for item in config_driven}
+    found = [item for item in found if not (item[2] == "entry point" and item[1] in configured)]
+    found.extend(config_driven)
+
     def rank(item: tuple[str, str, str]) -> tuple[int, int, int]:
         stem = Path(item[1]).stem.lower()
         for idx, group in enumerate((_EVAL_STEMS, _RUN_STEMS, _TRAIN_STEMS)):
             if stem in group:
-                return (idx, 0 if item[2] == "README" else 1, len(item[1]))
+                return (idx, 0 if item[2] in {"README", "config-driven"} else 1, len(item[1]))
+        if item[2] == "config-driven":
+            return (3, 0, len(item[1]))
         # Deeper paths are usually concrete scripts rather than package roots.
         return (9, 1, -item[1].count("/"))
 

@@ -49,6 +49,7 @@ Everything below serves that chain.
 | `execute/runner.py` | run commands, record everything | a conclusion may not precede the log |
 | `execute/parse.py` | metrics out of output | explicit regex beats heuristics |
 | `execute/compare.py` | paper vs measured | unit normalisation is explicit |
+| `execute/repair.py` | bounded environment repair | never touches model or training logic |
 | `execute/status.py` | five-state verdict | no evidence is not a negative result |
 | `execute/viability.py` | should this be a baseline | dimensions are independent and named |
 | `audit/config_audit.py` | paper hyperparameters vs code | quotes both sides |
@@ -110,6 +111,21 @@ adapter.
 - **New metric** - extend `METRIC_SYNONYMS`; comparison already normalises units.
 - **New domain adapter** - only needed once a second vertical is added; the
   current plan/execute cycle is domain-agnostic.
+
+## Repair policy
+
+A run may be repaired twice, and only in these ways:
+
+| Strategy | Trigger | Effect | Guard |
+|---|---|---|---|
+| `unpin` | `ENV_CONFLICT` naming `pkg==version` | drop the pin that no longer resolves | patch + backup kept beside the run |
+| `mkdir` | `FileNotFoundError` naming a path | create the missing directory | only inside the checkout; never a parent above it |
+
+Anything else stops. The checkout is restored after the attempts (`restore`), so
+a repair leaves no untracked edit behind; the patch and its backup are evidence in
+`repairs/`, not a new release. A repaired run gets its own `attempt-N/` directory
+and its own status, and the report says explicitly that the numbers come from the
+repaired attempt.
 
 ## Known weak points
 

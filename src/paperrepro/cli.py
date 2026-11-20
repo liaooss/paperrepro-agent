@@ -56,6 +56,11 @@ def build_parser() -> argparse.ArgumentParser:
     rp.add_argument("--auto", action="store_true", help="infer the plan from the repository")
     rp.add_argument("--yes", action="store_true", help="confirm executing an inferred plan")
     rp.add_argument("--plan-only", action="store_true", help="print the inferred plan and stop")
+    rp.add_argument(
+        "--no-repair",
+        action="store_true",
+        help="disable bounded repair of environment failures (dead pins, missing directories)",
+    )
     rp.add_argument("--out", default="", help="output directory (default: runs/<recipe-name>)")
     rp.add_argument("--backend", default="local", choices=["local", "conda", "docker"])
     rp.add_argument("--limit-minutes", type=int, default=None, help="hard wall-clock cap")
@@ -131,6 +136,7 @@ def cmd_run(args: argparse.Namespace) -> int:
             gpu=args.gpu,
             auto=args.auto,
             confirmed=args.yes,
+            repair=not args.no_repair,
         )
     except PlanError as exc:
         if args.plan_only:

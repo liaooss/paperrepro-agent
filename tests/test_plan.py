@@ -50,6 +50,28 @@ class TestInference(unittest.TestCase):
         finally:
             helpers.cleanup(repo)
 
+    def test_config_driven_entry_point(self):
+        repo = self._repo(
+            {
+                "README.md": "# demo\n",
+                "requirements.txt": "torch==2.1.0\n",
+                "train.py": (
+                    "import argparse\n"
+                    "p = argparse.ArgumentParser()\n"
+                    'p.add_argument("--config", default="configs/base.yaml")\n'
+                    "if __name__ == '__main__':\n    pass\n"
+                ),
+                "configs/base.yaml": "lr: 0.1\n",
+            }
+        )
+        try:
+            doc = load_paper(helpers._write_paper(PAPER))
+            recipe = infer_recipe(doc, scan_repo(repo))
+            self.assertIn("--config", recipe.eval_cmd)
+            self.assertIn("configs/base.yaml", recipe.eval_cmd)
+        finally:
+            helpers.cleanup(repo)
+
     def test_converter_scripts_are_not_experiments(self):
         repo = self._repo(
             {

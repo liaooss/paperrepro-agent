@@ -2,6 +2,44 @@
 
 Newest first. Each entry records what changed, what broke, and what is next.
 
+## 2026-11-20 - Phase 2: bounded repair and config-driven plans
+
+**Done**
+
+- `execute/repair.py`: two deterministic strategies, `unpin` (a `pkg==version`
+  that no longer resolves) and `mkdir` (a directory the release expects).
+  Anything else stops the loop.
+- Repair is bounded to two attempts, writes the patch and a backup under
+  `repairs/`, runs each attempt in its own `attempt-N/` directory, and restores
+  the checkout afterwards so a repair cannot leave an untracked edit.
+- The report has a **Repair attempts** table and states that the numbers come
+  from the repaired attempt.
+- Config-driven plan inference: `run.py` plus `--config configs/x.yaml` now
+  beats a bare `run.py`, and a config-driven candidate displaces the plain
+  entry-point candidate for the same file.
+- 11 new tests (154 total), including an end-to-end repair that fails, creates a
+  directory, and measures a metric on the second attempt.
+
+**Broke and fixed**
+
+- The first version of `mkdir` created the *file path* as a directory
+  (`results/out.txt/`), so the retry failed again. It now creates the parent
+  when the missing path carries a suffix.
+- `restore` resolved the backup relative to the wrong root and left
+  `requirements.txt` modified in the checkout. Caught by checking
+  `git status` in the cloned repository after a repair run, which is now part of
+  how the feature is verified by hand.
+
+**Blocked**
+
+- Docker remains unexercised: WSL2 has no distribution on this machine. The user
+  chose to continue with the venv backend and install WSL2 later.
+
+**Next**
+
+- API-rename repair behind an explicit allow-list.
+- A real case that reaches `BLOCKED` at runtime.
+
 ## 2026-11-19 - Phase 1 close-out: the failing case
 
 **Done**

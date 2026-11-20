@@ -20,6 +20,7 @@ from ..risk import run_rules
 from ..textutil import metric_canonical
 from .compare import ClaimOutcome, compare_claims, summarise_outcomes
 from .recipe import Recipe, load_recipe
+from .repair import MAX_ATTEMPTS, RepairPolicy, run_with_repair
 from .report import render_run_markdown
 from .runner import RunResult, execute_recipe
 from .status import reproduction_status
@@ -40,6 +41,8 @@ class RunAssessment:
     claims: list[Claim] = field(default_factory=list)
     findings: list[Finding] = field(default_factory=list)
     audit: list = field(default_factory=list)
+    repairs: list = field(default_factory=list)
+    original_failure: str = ""
     status: str = "INSUFFICIENT_EVIDENCE"
     status_reason: str = ""
     plan: str = ""
@@ -58,6 +61,8 @@ class RunAssessment:
             "run": self.run.to_dict(),
             "claims": [c.to_dict() for c in self.claims],
             "audit": [c.to_dict() for c in self.audit],
+            "repairs": [r.to_dict() for r in self.repairs],
+            "original_failure": self.original_failure,
             "outcomes": [o.to_dict() for o in self.outcomes],
             "outcome_summary": summarise_outcomes(self.outcomes),
             "viability": self.viability.to_dict(),
@@ -207,6 +212,8 @@ def run_case(
     gpu: bool = False,
     auto: bool = False,
     confirmed: bool = False,
+    repair: bool = True,
+    max_repairs: int = MAX_ATTEMPTS,
 ) -> RunAssessment:
     """Acquire, plan, execute, audit, compare, and score one paper/release pair.
 
@@ -249,13 +256,14 @@ def run_case(
     claims = _with_target(claims, recipe)
     recipe = _prepare_harness(recipe, repo_path)
 
-    run = execute_recipe(
+    run, repairs, original = run_with_repair(
         recipe,
         workdir=repo_path,
         out_dir=out,
         backend_name=backend,
         limit_minutes=limit_minutes,
         gpu=gpu,
+        policy=RepairPolicy(enabled=repair, max_attempts=max_repairs),
     )
     outcomes = compare_claims(
         claims, run.metrics, tolerance_abs=recipe.tolerance_abs, tolerance_rel=recipe.tolerance_rel
@@ -264,6 +272,11 @@ def run_case(
     viability = assess_viability(run, outcomes, findings)
     audit = audit_parameters(doc, scan)
     status, status_reason = reproduction_status(run, outcomes)
+    if repairs:
+        prefix = (
+            f"after {len(repairs)} repair attempt(s) on {original.failure if original else 'a failure'}: "
+        )
+        status_reason = prefix + status_reason
 
     assessment = RunAssessment(
         name=recipe.name,
@@ -276,6 +289,8 @@ def run_case(
         claims=claims,
         findings=findings,
         audit=audit,
+        repairs=repairs,
+        original_failure=(original.failure if original else ""),
         status=status,
         status_reason=status_reason,
         plan=plan,

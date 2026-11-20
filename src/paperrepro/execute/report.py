@@ -135,9 +135,34 @@ def render_run_markdown(assessment: "RunAssessment") -> str:
         add("Failure kinds map to different remedies:")
         add("")
         add("- `MISSING_WEIGHTS` / `DATA_UNAVAILABLE` — only the authors can fix this; ask them.")
-        add("- `ENV_CONFLICT` — try `--backend docker` or pin the versions the release expects.")
+        add("- `ENV_CONFLICT` — try `--backend docker`, or let the bounded repair drop a dead pin "
+            "(it will say so in **Repair attempts**).")
         add("- `OOM` — reduce batch size or resolution; the claim may still be checkable.")
         add("- `TIMEOUT` — raise `--limit-minutes` or reduce the evaluation split.")
+        add("")
+
+    repairs = getattr(assessment, "repairs", []) or []
+    if repairs:
+        add("## Repair attempts")
+        add("")
+        add(
+            "The first attempt failed. Only the environment was touched; no model or training "
+            "logic was modified, and each edit is kept as a patch next to the run."
+        )
+        add("")
+        add("| # | Failure | Strategy | Change | Patch | Result |")
+        add("|---|---------|----------|--------|-------|--------|")
+        for action in repairs:
+            patch = Path(action.patch_path).name if action.patch_path else "—"
+            add(
+                f"| {action.attempt} | `{action.failure}` | {action.strategy} | "
+                f"{_cell(action.detail)} | {patch} | {'fixed it' if action.ok else 'did not help'} |"
+            )
+        add("")
+        if run.status == "ok":
+            add("The numbers below come from the **repaired** run, not the original attempt.")
+        else:
+            add("The repair did not produce a measurement; the status below reflects the repaired attempt.")
         add("")
 
     metric = assessment.recipe.metric
