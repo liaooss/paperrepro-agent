@@ -57,9 +57,11 @@ class TestSelection(unittest.TestCase):
 
 class TestRunnerReportsBackendFailure(unittest.TestCase):
     def test_docker_unavailable_becomes_a_clean_status(self):
+        # CI runners ship a docker CLI, so the absence has to be simulated.
         with tempfile.TemporaryDirectory() as tmp:
             work = Path(tmp)
-            run = execute_recipe(_recipe(), work, work / "out", backend_name="docker")
+            with mock.patch("shutil.which", return_value=None):
+                run = execute_recipe(_recipe(), work, work / "out", backend_name="docker")
         self.assertEqual(run.status, "error")
         self.assertEqual(run.failure, "BACKEND_UNAVAILABLE")
         self.assertIn("docker", run.failure_detail.lower())
