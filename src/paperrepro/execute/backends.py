@@ -8,6 +8,7 @@ builds a disposable environment and records every command it runs.
 
 from __future__ import annotations
 
+import hashlib
 import os
 import shutil
 import subprocess
@@ -274,11 +275,16 @@ class DockerBackend(Backend):
     def __init__(self, workdir: Path, recipe: Recipe, artifacts: Path, gpu: bool = False) -> None:
         super().__init__(workdir, recipe, artifacts)
         self.gpu = gpu
-        self.image = f"paperrepro-{abs(hash(recipe.name)) % 100000:05d}"
+        # Deterministic name: Python's str hash is salted per process, which
+        # would rebuild the image on every run.
+        digest = hashlib.sha1(recipe.name.encode("utf-8")).hexdigest()[:8]
+        self.image = f"paperrepro-{digest}"
 
     def prepare(self) -> list[CommandResult]:
         docker = self._docker()
-        steps = "\n".join(f"RUN {cmd}" for cmd in self.recipe.install)
+        # Recipe commands use {python}/{pip} placeholders; inside an image both
+        # resolve to the image's own interpreter.
+        steps = "\n".join(f"RUN {substitute(cmd, 'python')}" for cmd in self.recipe.install)
         dockerfile = (
             f"FROM python:{self.recipe.python}-slim\n"
             "ENV DEBIAN_FRONTEND=noninteractive PYTHONUNBUFFERED=1\n"
@@ -289,18 +295,52 @@ class DockerBackend(Backend):
             f"{steps}\n"
         )
         (self.workdir / "Dockerfile.paperrepro").write_text(dockerfile, encoding="utf-8")
-        build = self._spawn(
-            f'"{docker}" build -f "{self.workdir / "Dockerfile.paperrepro"}" -t {self.image} "{self.workdir}"',
-            self.workdir,
-            3600,
-            os.environ.copy(),
+
+        # Keep the build context sane: a transformed checkout can carry a venv,
+        # a git history and model caches, none of which belong in an image.
+        ignore = self.workdir / ".dockerignore"
+        ignore.write_text(
+            "\n".join(
+                [
+                    ".git",
+                    ".paperrepro-venv",
+                    ".paperrepro-harness",
+                    ".paperrepro-conda",
+                    ".hf-cache",
+                    ".torch-cache",
+                    ".mpl-cache",
+                    "data",
+                    "__pycache__",
+                    "*.pyc",
+                ]
+            )
+            + "\n",
+            encoding="utf-8",
         )
+        build = self._build(docker, os.environ.copy())
         build = self._record(build, "00-docker-build")
+        if not build.ok and _is_registry_failure(build.tail(4000)):
+            # BuildKit resolves the base image over its own network stack; on
+            # some networks that path fails while `docker pull` works. The
+            # legacy builder uses the local image store, so retry once there.
+            legacy_env = os.environ.copy()
+            legacy_env["DOCKER_BUILDKIT"] = "0"
+            build = self._record(self._build(docker, legacy_env), "00-docker-build-legacy")
         if not build.ok:
             raise BackendError(f"docker build failed: {build.tail(800)}")
         self._python = "python"
         self.prepared = True
         return [build]
+
+    def _build(self, docker: str, env: dict[str, str]) -> CommandResult:
+        dockerfile = (self.workdir / "Dockerfile.paperrepro").as_posix()
+        context = self.workdir.as_posix()
+        return self._spawn(
+            f'"{docker}" build -f "{dockerfile}" -t {self.image} "{context}"',
+            self.workdir,
+            3600,
+            env,
+        )
 
     def run(self, cmd: str, timeout_s: int, log_name: str, env: dict[str, str] | None = None) -> CommandResult:
         docker = shutil.which("docker") or "docker"
@@ -314,12 +354,27 @@ class DockerBackend(Backend):
         extra.update(env or {})
         env_flags = " ".join(f'-e {k}="{v}"' for k, v in extra.items())
         inner = substitute(cmd, "python")
+        mount = self.workdir.as_posix()
         full = (
-            f'"{docker}" run --rm {gpu}-v "{self.workdir}:/work" -w /work {env_flags} '
+            f'"{docker}" run --rm {gpu}-v "{mount}:/work" -w /work {env_flags} '
             f'{self.image} bash -lc "{inner}"'
         )
         result = self._spawn(full, self.workdir, timeout_s, os.environ.copy())
         return self._record(result, log_name)
+
+
+def _is_registry_failure(text: str) -> bool:
+    """A base-image fetch failure, as opposed to a build that actually broke."""
+    lowered = (text or "").lower()
+    markers = (
+        "failed to fetch oauth token",
+        "failed to resolve source metadata",
+        "failed to solve",
+        "no such host",
+        "dial tcp",
+        "tls handshake timeout",
+    )
+    return any(marker in lowered for marker in markers)
 
 
 def get_backend(name: str, workdir: Path, recipe: Recipe, artifacts: Path, gpu: bool = False) -> Backend:

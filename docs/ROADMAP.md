@@ -9,7 +9,7 @@ Status as of 2026-11-19. Phases follow `docs/PROJECT_PLAN.md`.
 | Paper ingest (LaTeX, Markdown, HTML, PDF via extra) | done |
 | Claim ledger with paper locations | done |
 | Repository scan and 17 static rules | done |
-| Recipe format and three backends | done, docker unexercised |
+| Recipe format and three backends | done; docker verified on the DistilBERT case (same metric as venv) |
 | Command recording, failure taxonomy | done |
 | Metric extraction and comparison | done |
 | Five-state reproduction status | done |

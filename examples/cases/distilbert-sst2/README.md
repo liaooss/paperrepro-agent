@@ -77,6 +77,19 @@ informative: the -0.24 point delta cannot be sampling noise, so it must come fro
 the protocol (tokenisation, max length, label mapping) or from the checkpoint
 itself. Evidence: [`result/multiseed_report.md`](result/multiseed_report.md).
 
+## Two backends, same number
+
+The same recipe ran under both isolation backends:
+
+| Backend | Isolation | Wall clock | Metric |
+|---|---|---|---|
+| `local` | venv | 0.6 min (warm) | 0.9106 |
+| `docker` | container, 3.26 GB image | 10.0 min cold (3.3 min build) | 0.9106 |
+
+Identical to four decimals, which is what a deterministic evaluation should do
+and what makes the container path trustworthy. Evidence:
+[`result/docker_report.md`](result/docker_report.md).
+
 ## What this case does and does not prove
 
 - It proves the loop closes: acquire → isolate → run → parse → compare → score,

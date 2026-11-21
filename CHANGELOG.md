@@ -4,6 +4,31 @@ All notable changes to this project are documented here. The format follows
 [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and the project adheres
 to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.8.0] - 2026-11-21
+
+The Docker backend is verified on a real case, and three defects found by
+running it are fixed.
+
+### Fixed
+
+- Recipe placeholders (`{pip}`, `{python}`) were not substituted inside the
+  generated Dockerfile.
+- The image name used Python's salted `hash()`, so every run rebuilt the image.
+  It is now a SHA-1 of the recipe name.
+- The build context included `.git` and the local virtualenv; a `.dockerignore`
+  is now written for the build.
+
+### Added
+
+- Legacy-builder fallback when BuildKit cannot resolve the base image, with both
+  attempts recorded in `artifacts/`.
+- 2 tests (179 total).
+
+### Verified
+
+- DistilBERT/SST-2 under `--backend docker`: accuracy 0.9106, identical to the
+  venv backend, 600 s cold (198 s build), 3.26 GB image.
+
 ## [0.7.0] - 2026-11-20
 
 The report now answers the question it exists for: is this paper usable as a

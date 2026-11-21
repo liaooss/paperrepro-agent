@@ -6,7 +6,7 @@ Last run: 2026-11-19, local Windows 11 / Python 3.14.8, and GitHub Actions
 ## Summary
 
 ```
-Ran 177 tests in ~52s
+Ran 179 tests in ~52s
 OK
 ```
 
@@ -44,7 +44,7 @@ need an interpreter create a throw-away virtualenv.
 
 | Gap | Why | Consequence |
 |---|---|---|
-| Docker success path | no daemon in CI and no WSL2 on the dev machine | implemented, unexecuted |
+| Docker success path | verified by hand on 2026-11-21 (WSL2 + Docker Desktop), not in CI | distilbert case reproduces the same metric in a container |
 | Docker failure path | covered | `tests/test_backends.py` pins the actionable message for a missing CLI, an unreachable daemon, and `status=error / BACKEND_UNAVAILABLE` from the runner |
 | GPU execution | no GPU in CI | CUDA code paths untested |
 | Real-network acquisition | CI is offline by design | tarball fallback tested only manually |

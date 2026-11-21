@@ -54,6 +54,19 @@ class TestSelection(unittest.TestCase):
                 backend.prepare()
         self.assertIn("daemon is not reachable", str(ctx.exception))
 
+    def test_image_name_is_deterministic(self):
+        first = DockerBackend(self.work, _recipe(), self.artifacts).image
+        second = DockerBackend(self.work, _recipe(), self.artifacts).image
+        self.assertEqual(first, second)
+        self.assertRegex(first, r"^paperrepro-[0-9a-f]{8}$")
+
+    def test_registry_failure_is_recognised(self):
+        from paperrepro.execute.backends import _is_registry_failure
+
+        self.assertTrue(_is_registry_failure("failed to fetch oauth token: dial tcp ..."))
+        self.assertTrue(_is_registry_failure("failed to solve: python:3.14-slim"))
+        self.assertFalse(_is_registry_failure("ERROR: could not find setup.py"))
+
 
 class TestRunnerReportsBackendFailure(unittest.TestCase):
     def test_docker_unavailable_becomes_a_clean_status(self):

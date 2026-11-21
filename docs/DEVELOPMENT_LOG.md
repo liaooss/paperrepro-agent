@@ -2,6 +2,31 @@
 
 Newest first. Each entry records what changed, what broke, and what is next.
 
+## 2026-11-21 - Docker backend verified on a real case
+
+**Done**
+
+- WSL2 was installed by the user and Docker Desktop's Linux engine came up. The
+  DistilBERT/SST-2 case then ran under `--backend docker` and produced
+  **accuracy 0.9106 - identical to the venv backend** - in a 3.26 GB image,
+  600 s cold (198 s of that was the build).
+- Fixed three DockerBackend defects found by actually running it:
+  `{pip}`/`{python}` placeholders were pasted into the Dockerfile unsubstituted;
+  the image name used Python's salted `hash()` so every run rebuilt; and the
+  build context included `.git` and the 1.7 GB venv, now excluded by a
+  `.dockerignore` written for the build.
+- Added a legacy-builder fallback: BuildKit resolves the base image over its own
+  network stack, which failed here with `failed to fetch oauth token ... dial tcp
+  [2a03:...]` while `docker pull` worked. On a registry-shaped failure the build
+  is retried once with `DOCKER_BUILDKIT=0`.
+- 2 new tests (179 total) for the deterministic image name and the
+  registry-failure detector.
+
+**Evidence**
+
+`examples/cases/distilbert-sst2/result/docker_report.md` and
+`docker_results.json`, next to the venv run of the same recipe.
+
 ## 2026-11-20 - Phase 3: the recommendation, with conditions
 
 **Done**

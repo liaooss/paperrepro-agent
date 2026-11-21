@@ -112,6 +112,22 @@ adapter.
 - **New domain adapter** - only needed once a second vertical is added; the
   current plan/execute cycle is domain-agnostic.
 
+## Docker backend
+
+`docker` builds one image per recipe (`FROM python:<recipe.python>-slim`, the
+install steps as `RUN`, the checkout `COPY`ed in), then runs each command with
+the checkout bind-mounted at `/work` so datasets and caches survive the run.
+
+Three things are deliberate:
+
+- the image name is a SHA-1 of the recipe name, not `hash()`, so a re-run reuses
+  the image instead of rebuilding;
+- a `.dockerignore` is written before the build, keeping `.git` and the local
+  virtualenv out of the context;
+- if BuildKit fails to resolve the base image (a network-shaped failure), the
+  build is retried once with the legacy builder, which uses the local image
+  store. Both attempts are recorded.
+
 ## Consistency audit families
 
 | Parameter | Kind | Why it is worth comparing |
