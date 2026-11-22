@@ -2,6 +2,29 @@
 
 Newest first. Each entry records what changed, what broke, and what is next.
 
+## 2026-11-22 - Phase 3 complete: split and normalisation audit
+
+**Done**
+
+- `split`: compares the split the paper reports on with the `split=` the code
+  configures, using the same spelling normalisation as the other enums.
+- `norm_mean`: compares the per-channel normalisation triple, captured as three
+  groups and compared component-wise, with a 0..1.5 plausibility guard so the
+  word "mean" in ordinary prose does not produce a false positive.
+- 4 new tests (183 total).
+- Releases v0.3.0 through v0.8.0 created, with tags, so the CHANGELOG and GitHub
+  finally agree.
+
+**Why these two**
+
+A validation number compared against a test number, and a different input
+normalisation, both produce a plausible-looking number that is simply not the
+same measurement. They were the last common causes we had no evidence for.
+
+**Next**
+
+- Phase 4: MCP server and a read-only web viewer over run directories.
+
 ## 2026-11-21 - Docker backend verified on a real case
 
 **Done**

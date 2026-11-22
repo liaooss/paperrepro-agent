@@ -136,6 +136,8 @@ Three things are deliberate:
 | optimizer | name | Adam vs AdamW changes the result |
 | image_size | number | "we resize to 224" vs `image_size: 256` is a silent mismatch |
 | f1_average | enum | macro-F1 and micro-F1 are different numbers with the same name |
+| split | enum | a validation number compared against a test number is apples to oranges |
+| norm_mean | tuple | per-channel normalisation mean shifts every input |
 
 The code side only reads configuration files and config-like modules; values
 outside a plausible range are discarded rather than reported.

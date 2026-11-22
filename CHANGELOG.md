@@ -4,6 +4,22 @@ All notable changes to this project are documented here. The format follows
 [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and the project adheres
 to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.9.0] - 2026-11-22
+
+The consistency audit gains the two remaining causes of "same code, different
+number".
+
+### Added
+
+- `split`: paper's reported split vs the code's `split=` (val/validation and
+  train/training normalised).
+- `norm_mean`: per-channel normalisation triple, compared component-wise.
+- 4 tests (183 total).
+
+### Housekeeping
+
+- Tags and GitHub releases added for 0.3.0 through 0.8.0.
+
 ## [0.8.0] - 2026-11-21
 
 The Docker backend is verified on a real case, and three defects found by

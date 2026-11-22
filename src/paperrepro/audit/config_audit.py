@@ -122,6 +122,20 @@ AUDITABLE: dict[str, tuple[str, str, str]] = {
         r"(?:average|averaging)\s*[:=]\s*['\"]?(macro|micro|weighted|binary)",
         "enum",
     ),
+    # Which split the number was measured on: comparing a validation number with
+    # a test number is the classic apples-to-oranges baseline mistake.
+    "split": (
+        r"\b(train|training|validation|val|test)\s+(?:set|split|subset)\b",
+        r"split\s*[:=]\s*['\"]?(train|val|valid|validation|test)\b",
+        "enum",
+    ),
+    # Per-channel normalisation constants: a different mean shifts every input
+    # and quietly moves the accuracy.
+    "norm_mean": (
+        r"(?:mean|means)\s*(?:of|:)?\s*[\[(]?\s*(0?\.\d+)\s*,\s*(0?\.\d+)\s*,\s*(0?\.\d+)",
+        r"(?:mean|MEAN)\s*[:=]\s*[\[(]\s*(0?\.\d+)\s*,\s*(0?\.\d+)\s*,\s*(0?\.\d+)",
+        "tuple",
+    ),
 }
 
 
@@ -129,14 +143,31 @@ def _line_of(text: str, offset: int) -> int:
     return text.count("\n", 0, offset) + 1
 
 
+def _raw_value(match, kind: str) -> str:
+    """One value from a match, or a '/'-joined triple for tuple parameters."""
+    if kind == "tuple":
+        groups = [g for g in match.groups()[:3] if g is not None]
+        return "/".join(g.strip() for g in groups)
+    return match.group(1).strip()
+
+
 def _paper_hits(doc: PaperDoc) -> dict[str, tuple[str, str]]:
     hits: dict[str, tuple[str, str]] = {}
     for heading, body in doc.sections.items():
-        for param, (pattern, _code_pattern, _kind) in AUDITABLE.items():
+        for param, (pattern, _code_pattern, kind) in AUDITABLE.items():
             if param in hits:
                 continue
             for match in re.finditer(pattern, body, re.IGNORECASE):
-                raw = match.group(1).strip()
+                raw = _raw_value(match, kind)
+                if kind == "tuple":
+                    parts = [p for p in raw.split("/") if p]
+                    if len(parts) != 3:
+                        continue
+                    try:
+                        if not all(0.0 <= float(p) <= 1.5 for p in parts):
+                            continue
+                    except ValueError:
+                        continue
                 if param == "learning_rate" and not re.search(r"[.eE]", raw):
                     # 'learning rate and beta 1' is not a learning rate of 1.
                     continue
@@ -170,11 +201,20 @@ def _code_hits(scan: RepoScan) -> dict[str, tuple[str, str]]:
         key=lambda f: (0 if f.lang == "config" else 1, f.path),
     )
     for f in ordered:
-        for param, (_paper_pattern, pattern, _kind) in AUDITABLE.items():
+        for param, (_paper_pattern, pattern, kind) in AUDITABLE.items():
             if param in hits:
                 continue
             for match in re.finditer(pattern, f.text, re.IGNORECASE):
-                raw = match.group(1).strip()
+                raw = _raw_value(match, kind)
+                if kind == "tuple":
+                    parts = [p for p in raw.split("/") if p]
+                    if len(parts) != 3:
+                        continue
+                    try:
+                        if not all(0.0 <= float(p) <= 1.5 for p in parts):
+                            continue
+                    except ValueError:
+                        continue
                 if param == "learning_rate" and not re.search(r"[.eE]", raw):
                     # 'learning rate and beta 1' is not a learning rate of 1.
                     continue
@@ -228,6 +268,12 @@ def audit_parameters(doc: PaperDoc, scan: RepoScan) -> list[ParamCheck]:
             note = "" if status == "MATCH" else "the paper and the code disagree"
         elif kind == "enum":
             same = _normalise_enum(p_val) == _normalise_enum(c_val)
+            status = "MATCH" if same else "MISMATCH"
+            note = "" if same else f"the paper says {p_val}, the code configures {c_val}"
+        elif kind == "tuple":
+            left = [x for x in p_val.split("/") if x]
+            right = [x for x in c_val.split("/") if x]
+            same = len(left) == len(right) and all(_same_number(a, b) for a, b in zip(left, right))
             status = "MATCH" if same else "MISMATCH"
             note = "" if same else f"the paper says {p_val}, the code configures {c_val}"
         else:

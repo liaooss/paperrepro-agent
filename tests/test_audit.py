@@ -89,6 +89,26 @@ We use a learning rate of 1e-3.
         checks = self._audit_with(paper, "average: macro\n")
         self.assertEqual(checks["f1_average"].status, "MATCH")
 
+    def test_split_match(self):
+        paper = "# P\n\n## Experiments\n\nWe report accuracy on the validation set.\n"
+        checks = self._audit_with(paper, "split: validation\n")
+        self.assertEqual(checks["split"].status, "MATCH")
+
+    def test_split_mismatch(self):
+        paper = "# P\n\n## Experiments\n\nWe report accuracy on the validation set.\n"
+        checks = self._audit_with(paper, "split: test\n")
+        self.assertEqual(checks["split"].status, "MISMATCH")
+
+    def test_normalisation_match(self):
+        paper = "# P\n\n## Method\n\nInputs are normalised with mean 0.485, 0.456, 0.406.\n"
+        checks = self._audit_with(paper, "mean: [0.485, 0.456, 0.406]\n")
+        self.assertEqual(checks["norm_mean"].status, "MATCH")
+
+    def test_normalisation_mismatch(self):
+        paper = "# P\n\n## Method\n\nInputs are normalised with mean 0.485, 0.456, 0.406.\n"
+        checks = self._audit_with(paper, "mean: [0.5, 0.5, 0.5]\n")
+        self.assertEqual(checks["norm_mean"].status, "MISMATCH")
+
     def test_code_only_parameter(self):
         paper = """# P
 
