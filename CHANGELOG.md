@@ -4,6 +4,22 @@ All notable changes to this project are documented here. The format follows
 [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and the project adheres
 to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.10.0] - 2026-11-22
+
+Phase 4 surfaces: an agent can read the evidence, a human can browse it.
+
+### Added
+
+- `paperrepro mcp`: MCP server over stdio (JSON-RPC 2.0, protocol 2024-11-05)
+  with `assess_paper`, `list_runs`, `get_run`, `get_report`.
+- `paperrepro web --runs DIR`: read-only HTTP view over run directories, with a
+  rendered report page and a JSON API, bound to 127.0.0.1.
+- 21 tests (204 total).
+
+### Notes
+
+- There is deliberately no MCP tool that executes a repository.
+
 ## [0.9.0] - 2026-11-22
 
 The consistency audit gains the two remaining causes of "same code, different

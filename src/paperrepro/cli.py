@@ -48,6 +48,12 @@ def build_parser() -> argparse.ArgumentParser:
 
     sub.add_parser("rules", help="list the deterministic risk rules")
     sub.add_parser("version", help="print the version")
+    sub.add_parser("mcp", help="serve the MCP tools over stdio (assess/list/get)")
+
+    wp = sub.add_parser("web", help="serve a read-only view over run directories")
+    wp.add_argument("--runs", default="runs", help="directory containing run outputs")
+    wp.add_argument("--port", type=int, default=8765)
+    wp.add_argument("--host", default="127.0.0.1")
 
     rp = sub.add_parser("run", help="execute a recipe and compare measured numbers with the paper")
     rp.add_argument("paper", help="paper file or URL (arXiv abs/ar5iv/PDF)")
@@ -163,6 +169,19 @@ def cmd_run(args: argparse.Namespace) -> int:
     return 0 if assessment.run.status == "ok" else 3
 
 
+def cmd_mcp(_args: argparse.Namespace) -> int:
+    from .mcp_server import serve as serve_mcp
+
+    return serve_mcp()
+
+
+def cmd_web(args: argparse.Namespace) -> int:
+    from .webapp import serve as serve_web
+
+    serve_web(args.runs, port=args.port, host=args.host)
+    return 0
+
+
 def main(argv: list[str] | None = None) -> int:
     parser = build_parser()
     args = parser.parse_args(argv)
@@ -178,6 +197,10 @@ def main(argv: list[str] | None = None) -> int:
         return cmd_rules(args)
     if args.command == "run":
         return cmd_run(args)
+    if args.command == "mcp":
+        return cmd_mcp(args)
+    if args.command == "web":
+        return cmd_web(args)
     parser.print_help()
     return 0
 

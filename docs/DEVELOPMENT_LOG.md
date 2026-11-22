@@ -2,6 +2,36 @@
 
 Newest first. Each entry records what changed, what broke, and what is next.
 
+## 2026-11-22 - Phase 4: MCP server and web view
+
+**Done**
+
+- `mcp_server.py`: JSON-RPC 2.0 over stdio, protocol version 2024-11-05, four
+  tools (`assess_paper`, `list_runs`, `get_run`, `get_report`). Notifications get
+  no response; unknown methods return -32601; tool errors are -32602.
+- `webapp.py`: read-only HTTP view over a run directory - index, rendered
+  Markdown report, `/api/runs`, `/api/run/<name>`. Path traversal is refused and
+  the server binds to 127.0.0.1 by default.
+- CLI: `paperrepro mcp` and `paperrepro web --runs DIR`.
+- 21 new tests (204 total), including a real HTTP round trip on an ephemeral port
+  and a traversal attempt.
+
+**Decisions**
+
+- The MCP surface has **no execute tool**. An agent may read evidence; starting a
+  container build stays a human decision at a terminal with a readable recipe.
+- The web view does not write anything, so it cannot corrupt a run's artifacts.
+
+**Verified by hand**
+
+- `paperrepro mcp` answers initialize and tools/list over a pipe.
+- `paperrepro web` served a real runs directory: `/api/runs` listed ten run
+  directories and `/run/final` rendered a 5.3 KB report page.
+
+**Next**
+
+- Task surface with progress, so a long run can be watched rather than waited on.
+
 ## 2026-11-22 - Phase 3 complete: split and normalisation audit
 
 **Done**

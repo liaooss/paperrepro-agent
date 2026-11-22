@@ -65,6 +65,24 @@ paperrepro run https://arxiv.org/abs/2010.01412 --repo https://github.com/google
 paperrepro run https://arxiv.org/abs/2010.01412 --repo https://github.com/google-research/sam --auto --yes
 ```
 
+## Three surfaces, one engine
+
+| Surface | Command | What it is for |
+|---|---|---|
+| CLI | `paperrepro assess` / `run` | the primary interface; scripts and CI |
+| MCP | `paperrepro mcp` | let another agent inspect evidence over stdio JSON-RPC |
+| Web | `paperrepro web --runs runs/` | read-only view over run directories, `127.0.0.1` only |
+
+The MCP server exposes four tools - `assess_paper`, `list_runs`, `get_run`,
+`get_report` - and deliberately **no execution tool**: starting a container build
+is a human decision with a recipe they can read, not something an agent should be
+able to trigger by accident.
+
+```bash
+paperrepro mcp                 # JSON-RPC 2.0 over stdio
+paperrepro web --runs runs/    # http://127.0.0.1:8765/
+```
+
 ## What a run produces
 
 | File | Content |

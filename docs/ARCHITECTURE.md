@@ -55,6 +55,8 @@ Everything below serves that chain.
 | `audit/config_audit.py` | paper hyperparameters vs code | quotes both sides |
 | `risk/rules.py` | 17 static checks | pure functions of the scan |
 | `verdict/score.py` | static R0-R3 | documented in RUBRIC.md and tested |
+| `mcp_server.py` | JSON-RPC over stdio | read-only tools; no execution surface |
+| `webapp.py` | read-only HTTP view | serves run directories, never starts one |
 | `llm/client.py` | optional prose | may never introduce a fact |
 
 ## Data flow of one run
@@ -141,6 +143,20 @@ Three things are deliberate:
 
 The code side only reads configuration files and config-like modules; values
 outside a plausible range are discarded rather than reported.
+
+## Surfaces
+
+Three surfaces read the same run directory; none of them owns business logic.
+
+| Surface | Transport | Safety stance |
+|---|---|---|
+| CLI | argv | the only place a run can be started |
+| MCP | JSON-RPC 2.0 over stdio | four read/assess tools, no execute tool |
+| Web | HTTP on 127.0.0.1 | read-only, path-checked, no writes |
+
+The asymmetry is deliberate. An agent that can *start* an arbitrary run can also
+start a container build at 3am; an agent that can *read* the evidence is useful
+and harmless.
 
 ## Repair policy
 

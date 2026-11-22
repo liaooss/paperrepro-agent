@@ -49,13 +49,13 @@ committed with artifacts. One of the two must run from an inferred plan.
   attached to it and the machine-hours of keeping the baseline in a comparison
   table.
 
-## Phase 4 - surfaces
+## Phase 4 - surfaces (done, first version)
 
-- MCP server: `create_reproduction`, `get_task_status`, `get_experiment_logs`,
-  `compare_results`, `generate_report`; read-only resources for artifacts.
-- Web UI over the same run directory: task list, live log, evidence viewer,
-  comparison chart.
-- No business logic in either surface.
+- **Done:** MCP server over stdio with `assess_paper`, `list_runs`, `get_run`,
+  `get_report`. Execution is intentionally not exposed.
+- **Done:** read-only web view: run index, rendered report, `/api/runs`,
+  path-checked and bound to `127.0.0.1`.
+- **Next:** a task/queue surface, live logs, and a comparison chart.
 
 ## Phase 5 - domains
 
